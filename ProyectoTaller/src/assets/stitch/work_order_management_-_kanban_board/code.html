@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Work Order Management - Factoría La Caravana</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#d80327",
+                        "background-light": "#f8f5f6",
+                        "background-dark": "#230f12",
+                        "neutral-dark": "#2d1b1e", // Derived from primary hue
+                        "neutral-surface": "#3a2528", // Slightly lighter surface
+                        "neutral-border": "#553539", 
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for horizontal scrolling if needed */
+        .custom-scrollbar::-webkit-scrollbar {
+            height: 8px;
+            width: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #2d1b1e;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #553539;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #d80327;
+        }
+        
+        .glass-panel {
+            background: rgba(45, 27, 30, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(216, 3, 39, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-800 dark:text-gray-100 font-display min-h-screen flex flex-col overflow-hidden">
+<!-- Header Section -->
+<header class="w-full h-16 border-b border-neutral-border bg-neutral-dark flex items-center justify-between px-6 shrink-0 z-20">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 bg-gradient-to-br from-primary to-red-900 rounded-lg flex items-center justify-center shadow-lg shadow-primary/20">
+<span class="material-icons-round text-white">build</span>
+</div>
+<h1 class="text-xl font-bold tracking-tight text-white uppercase">Factoría <span class="text-primary">La Caravana</span></h1>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative hidden md:block">
+<span class="material-icons-round absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">search</span>
+<input class="bg-neutral-surface border-none rounded-full py-2 pl-10 pr-4 text-sm text-white placeholder-gray-500 focus:ring-2 focus:ring-primary focus:bg-neutral-dark transition-all w-64" placeholder="Global search..." type="text"/>
+</div>
+<button class="relative p-2 text-gray-400 hover:text-white transition-colors rounded-full hover:bg-neutral-surface">
+<span class="material-icons-round">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full animate-pulse"></span>
+</button>
+<div class="flex items-center gap-3 pl-6 border-l border-neutral-border">
+<div class="text-right hidden sm:block">
+<p class="text-sm font-semibold text-white">Marco Rossi</p>
+<p class="text-xs text-gray-400">Head Mechanic</p>
+</div>
+<img class="w-10 h-10 rounded-full border-2 border-neutral-border object-cover" data-alt="Mechanic profile picture showing a man with a beard smiling" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJe9y9QuxmrQ9qezvJzy_vyOkbhswI2ka9ZYYwfXnKqA10umGYcSdfGuLsEwgpWzhQ11Lb4g31HRXbRlak80jo0VxYnkqsFR9pkvJWbiYHY-LEe_Eb5XWdyz-vSDGHEXJyGwieRJkGqADnzfeTM0W7CgMxidWB9erCeUiyceNJDBPvpGaz-P-RSETmgOvKSvpPhNGnl7AZiidzFw-4TaAj16OLTNqy4DZOnn0m2yQYCzJWP6rhmcQWg4JA5VVDtcCau_7Dc1JIXg"/>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<div class="flex flex-1 overflow-hidden">
+<!-- Sidebar Navigation -->
+<aside class="w-20 bg-neutral-dark border-r border-neutral-border flex flex-col items-center py-6 gap-6 shrink-0 hidden sm:flex">
+<nav class="flex flex-col gap-4 w-full px-2">
+<a class="w-full aspect-square flex flex-col items-center justify-center gap-1 rounded-xl text-primary bg-primary/10 hover:bg-primary/20 transition-all group relative" href="#">
+<span class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-primary rounded-r-full"></span>
+<span class="material-icons-round text-2xl">dashboard</span>
+<span class="text-[10px] font-medium opacity-80">Board</span>
+</a>
+<a class="w-full aspect-square flex flex-col items-center justify-center gap-1 rounded-xl text-gray-400 hover:text-white hover:bg-neutral-surface transition-all group" href="#">
+<span class="material-icons-round text-2xl">directions_car</span>
+<span class="text-[10px] font-medium opacity-60 group-hover:opacity-100">Vehicles</span>
+</a>
+<a class="w-full aspect-square flex flex-col items-center justify-center gap-1 rounded-xl text-gray-400 hover:text-white hover:bg-neutral-surface transition-all group" href="#">
+<span class="material-icons-round text-2xl">people</span>
+<span class="text-[10px] font-medium opacity-60 group-hover:opacity-100">Clients</span>
+</a>
+<a class="w-full aspect-square flex flex-col items-center justify-center gap-1 rounded-xl text-gray-400 hover:text-white hover:bg-neutral-surface transition-all group" href="#">
+<span class="material-icons-round text-2xl">inventory_2</span>
+<span class="text-[10px] font-medium opacity-60 group-hover:opacity-100">Parts</span>
+</a>
+</nav>
+<div class="mt-auto">
+<a class="w-12 h-12 flex items-center justify-center rounded-xl text-gray-400 hover:text-white hover:bg-neutral-surface transition-all" href="#">
+<span class="material-icons-round">settings</span>
+</a>
+</div>
+</aside>
+<!-- Board Area -->
+<main class="flex-1 flex flex-col overflow-hidden relative bg-[url('https://images.unsplash.com/photo-1486006920555-c77dcf18193c?q=80&amp;w=2803&amp;auto=format&amp;fit=crop')] bg-cover bg-center" data-alt="Dark abstract mechanic workshop texture or garage background">
+<!-- Overlay to darken background image -->
+<div class="absolute inset-0 bg-background-dark/95 backdrop-blur-sm z-0"></div>
+<!-- Controls Bar -->
+<div class="relative z-10 p-6 pb-2 shrink-0">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+<div>
+<h2 class="text-2xl font-bold text-white flex items-center gap-3">
+                            Work Orders 
+                            <span class="text-sm font-normal text-gray-400 bg-neutral-surface px-2 py-0.5 rounded border border-neutral-border">24 Active</span>
+</h2>
+<p class="text-gray-400 text-sm mt-1">Manage repair workflow and assignments.</p>
+</div>
+<button class="bg-primary hover:bg-red-700 text-white px-5 py-2.5 rounded-lg shadow-lg shadow-primary/30 flex items-center gap-2 font-semibold transition-all group">
+<span class="material-icons-round group-hover:rotate-90 transition-transform duration-300">add</span>
+                        New Work Order
+                    </button>
+</div>
+<!-- Filters -->
+<div class="flex flex-wrap items-center gap-3 mb-4">
+<div class="relative grow max-w-md">
+<span class="material-icons-round absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-lg">filter_list</span>
+<input class="w-full bg-neutral-dark/80 backdrop-blur border border-neutral-border rounded-lg py-2 pl-10 pr-4 text-sm text-white placeholder-gray-500 focus:ring-1 focus:ring-primary focus:border-primary transition-all" placeholder="Filter by Plate, Client or Mechanic..." type="text"/>
+</div>
+<div class="flex items-center gap-2">
+<select class="bg-neutral-dark/80 backdrop-blur border border-neutral-border rounded-lg py-2 pl-3 pr-8 text-sm text-gray-300 focus:ring-primary focus:border-primary">
+<option>All Priorities</option>
+<option>High Priority</option>
+<option>Medium Priority</option>
+<option>Low Priority</option>
+</select>
+<select class="bg-neutral-dark/80 backdrop-blur border border-neutral-border rounded-lg py-2 pl-3 pr-8 text-sm text-gray-300 focus:ring-primary focus:border-primary">
+<option>All Mechanics</option>
+<option>Marco Rossi</option>
+<option>Sarah J.</option>
+</select>
+<button class="p-2 text-gray-400 hover:text-white bg-neutral-dark/80 border border-neutral-border rounded-lg hover:border-primary transition-colors" title="Grid View">
+<span class="material-icons-round">grid_view</span>
+</button>
+<button class="p-2 text-gray-400 hover:text-white bg-neutral-dark/80 border border-neutral-border rounded-lg hover:border-primary transition-colors" title="List View">
+<span class="material-icons-round">view_list</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Kanban Columns Container -->
+<div class="relative z-10 flex-1 overflow-x-auto overflow-y-hidden px-6 pb-6 custom-scrollbar">
+<div class="flex gap-6 h-full min-w-max">
+<!-- COLUMN: PENDING -->
+<div class="w-80 flex flex-col h-full bg-neutral-dark/40 rounded-xl border border-neutral-border/50 backdrop-blur-sm">
+<!-- Column Header -->
+<div class="p-4 border-b border-neutral-border/50 flex justify-between items-center sticky top-0 bg-neutral-dark/90 rounded-t-xl backdrop-blur-md z-10">
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-gray-500"></div>
+<span class="font-bold text-gray-200 uppercase tracking-wider text-sm">Pending</span>
+<span class="bg-neutral-surface text-gray-400 text-xs px-2 py-0.5 rounded-full border border-neutral-border">4</span>
+</div>
+<button class="text-gray-500 hover:text-white"><span class="material-icons-round text-lg">more_horiz</span></button>
+</div>
+<!-- Cards Container -->
+<div class="p-3 flex-1 overflow-y-auto custom-scrollbar flex flex-col gap-3">
+<!-- Card 1 -->
+<div class="group bg-neutral-surface hover:bg-neutral-surface/80 border border-transparent hover:border-primary/50 p-4 rounded-lg shadow-sm transition-all cursor-grab active:cursor-grabbing relative overflow-hidden">
+<div class="absolute top-0 left-0 w-1 h-full bg-primary/30 group-hover:bg-primary transition-colors"></div>
+<div class="flex justify-between items-start mb-3 pl-2">
+<div>
+<span class="bg-primary/20 text-primary border border-primary/20 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wide">High</span>
+<h3 class="text-white font-mono font-bold text-lg mt-1">ABC-123</h3>
+</div>
+<button class="text-gray-500 hover:text-white opacity-0 group-hover:opacity-100 transition-opacity"><span class="material-icons-round text-lg">edit</span></button>
+</div>
+<div class="pl-2 space-y-2">
+<div>
+<p class="text-gray-400 text-xs font-medium uppercase">Client</p>
+<div class="flex items-center gap-2">
+<span class="text-gray-200 text-sm font-semibold">Juan Perez</span>
+</div>
+</div>
+<div>
+<p class="text-gray-400 text-xs font-medium uppercase">Vehicle</p>
+<p class="text-gray-300 text-sm">Toyota Hilux 2018</p>
+</div>
+<div class="pt-2 mt-2 border-t border-neutral-border flex justify-between items-center">
+<div class="flex -space-x-2">
+<div class="w-6 h-6 rounded-full bg-neutral-dark border border-neutral-border flex items-center justify-center text-[10px] text-gray-400">?</div>
+</div>
+<span class="text-xs text-gray-500 flex items-center gap-1"><span class="material-icons-round text-[14px]">schedule</span> 2h ago</span>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="group bg-neutral-surface hover:bg-neutral-surface/80 border border-transparent hover:border-primary/50 p-4 rounded-lg shadow-sm transition-all cursor-grab active:cursor-grabbing relative overflow-hidden">
+<div class="absolute top-0 left-0 w-1 h-full bg-orange-500/30 group-hover:bg-orange-500 transition-colors"></div>
+<div class="flex justify-between items-start mb-3 pl-2">
+<div>
+<span class="bg-orange-500/10 text-orange-400 border border-orange-500/20 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wide">Medium</span>
+<h3 class="text-white font-mono font-bold text-lg mt-1">GTR-550</h3>
+</div>
+<button class="text-gray-500 hover:text-white opacity-0 group-hover:opacity-100 transition-opacity"><span class="material-icons-round text-lg">edit</span></button>
+</div>
+<div class="pl-2 space-y-2">
+<div>
+<p class="text-gray-400 text-xs font-medium uppercase">Client</p>
+<span class="text-gray-200 text-sm font-semibold">Fast Logistics LLC</span>
+</div>
+<div>
+<p class="text-gray-400 text-xs font-medium uppercase">Issue</p>
+<p class="text-gray-300 text-sm truncate">Brake pads replacement</p>
+</div>
+<div class="pt-2 mt-2 border-t border-neutral-border flex justify-between items-center">
+<div class="flex -space-x-2">
+<img class="w-6 h-6 rounded-full border border-neutral-border object-cover" data-alt="Avatar of mechanic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBqs5LDuvKis7nuAtqyn52Y-AcZyYTiZ2hhqSNgAVXQwU99D6VcaiDPs6fQ4pRyDw0Gty0pRD8UZgqgmDXWWpxwJ2ZgSFegIIk9MXOwjewllzoGELjhTXv2eeWkfOSLJgBBg7F3ZYx_9DgBwgM33UexjKJvlNogGe2KMJQHdp_8cU7KWvJVC67MvgS0wYf95PFypFoYvWo45H_CgfeZ6dQ0lOn6NY_WOhswz7iQYfM_v3W9Epbs1oIuvqrt0Ly_9izG-mx2SvDq9g"/>
+</div>
+<span class="text-xs text-gray-500 flex items-center gap-1"><span class="material-icons-round text-[14px]">schedule</span> 1d ago</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- COLUMN: IN PROGRESS -->
+<div class="w-80 flex flex-col h-full bg-neutral-dark/40 rounded-xl border border-neutral-border/50 backdrop-blur-sm">
+<!-- Column Header -->
+<div class="p-4 border-b border-neutral-border/50 flex justify-between items-center sticky top-0 bg-neutral-dark/90 rounded-t-xl backdrop-blur-md z-10">
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-blue-500 animate-pulse"></div>
+<span class="font-bold text-gray-200 uppercase tracking-wider text-sm">In Progress</span>
+<span class="bg-neutral-surface text-gray-400 text-xs px-2 py-0.5 rounded-full border border-neutral-border">2</span>
+</div>
+<button class="text-gray-500 hover:text-white"><span class="material-icons-round text-lg">more_horiz</span></button>
+</div>
+<!-- Cards Container -->
+<div class="p-3 flex-1 overflow-y-auto custom-scrollbar flex flex-col gap-3">
+<!-- Card 3 -->
+<div class="group bg-neutral-surface hover:bg-neutral-surface/80 border border-transparent hover:border-primary/50 p-4 rounded-lg shadow-sm transition-all cursor-grab active:cursor-grabbing relative overflow-hidden">
+<div class="absolute top-0 left-0 w-1 h-full bg-primary/30 group-hover:bg-primary transition-colors"></div>
+<div class="flex justify-between items-start mb-3 pl-2">
+<div>
+<span class="bg-primary/20 text-primary border border-primary/20 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wide">High</span>
+<h3 class="text-white font-mono font-bold text-lg mt-1">XYZ-987</h3>
+</div>
+<button class="text-gray-500 hover:text-white opacity-0 group-hover:opacity-100 transition-opacity"><span class="material-icons-round text-lg">edit</span></button>
+</div>
+<div class="pl-2 space-y-2">
+<div>
+<p class="text-gray-400 text-xs font-medium uppercase">Client</p>
+<span class="text-gray-200 text-sm font-semibold">Enterprise Corp</span>
+</div>
+<div class="bg-neutral-dark/50 p-2 rounded border border-neutral-border/50">
+<div class="flex justify-between text-xs text-gray-400 mb-1">
+<span>Diagnostic</span>
+<span>85%</span>
+</div>
+<div class="w-full h-1.5 bg-neutral-border rounded-full overflow-hidden">
+<div class="h-full bg-blue-500 w-[85%] rounded-full"></div>
+</div>
+</div>
+<div class="pt-2 mt-2 border-t border-neutral-border flex justify-between items-center">
+<div class="flex -space-x-2">
+<img class="w-6 h-6 rounded-full border border-neutral-border object-cover" data-alt="Avatar of mechanic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBlvUfPzShYNwqA1s_JIV8cwerdBKcuu7_H3-Y3WvpsSlqaHFeo-aTf3OPe3OpLbcUxDk9K9vDf_aFciGEYZ4ooGk7ADlDwbxkpcRdubCMH7v83OHEjIKoCs5tZAwAuml0mHGZXII84u0G-Aod7LZW79gz5P0x__qNT6NlasCCmUWCZall7T1m8mzGtmAzu3AMFhlOfN78cGmNW4LDhmU5nznms9Z7ynJuoKzMG1V8AYVa98yledlCbP6oCJAv1vybJ2u4ZYgNMag"/>
+<img class="w-6 h-6 rounded-full border border-neutral-border object-cover" data-alt="Avatar of second mechanic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDu_EOjCtvemkPaM94MlVKDVZtiijS7saXSuVEUFBFmwiSneG_8pS0sNx6Eopgisd6kbUErgl4QSoFxiIqC0sQO2ui3XBdypwMDzMP4rmmLoSL_J46yeMkelMt0tPSQ5OtEekBDB2dMVTAMwR0mXG7QGsri0CkEH5p5ssi2UeQ6nWRNFkM0ptoqDTHSQk15EET9nnc95yRxtze4L9dk-S41aiVY3i6U5wwkTpKbKRVNYSuFb5ODv_9fjJpqI0OzKYkBmC32H8Sc0A"/>
+</div>
+<span class="text-xs text-blue-400 flex items-center gap-1 font-medium">Active Now</span>
+</div>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="group bg-neutral-surface hover:bg-neutral-surface/80 border border-transparent hover:border-primary/50 p-4 rounded-lg shadow-sm transition-all cursor-grab active:cursor-grabbing relative overflow-hidden">
+<div class="absolute top-0 left-0 w-1 h-full bg-green-500/30 group-hover:bg-green-500 transition-colors"></div>
+<div class="flex justify-between items-start mb-3 pl-2">
+<div>
+<span class="bg-green-500/10 text-green-400 border border-green-500/20 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wide">Low</span>
+<h3 class="text-white font-mono font-bold text-lg mt-1">VOL-420</h3>
+</div>
+<button class="text-gray-500 hover:text-white opacity-0 group-hover:opacity-100 transition-opacity"><span class="material-icons-round text-lg">edit</span></button>
+</div>
+<div class="pl-2 space-y-2">
+<div>
+<p class="text-gray-400 text-xs font-medium uppercase">Client</p>
+<span class="text-gray-200 text-sm font-semibold">Sarah Connor</span>
+</div>
+<div>
+<p class="text-gray-400 text-xs font-medium uppercase">Task</p>
+<p class="text-gray-300 text-sm">Oil Change &amp; Filter</p>
+</div>
+<div class="pt-2 mt-2 border-t border-neutral-border flex justify-between items-center">
+<div class="flex -space-x-2">
+<img class="w-6 h-6 rounded-full border border-neutral-border object-cover" data-alt="Avatar of mechanic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCVOP-u94pGtg54rq6VuEU4VDE-iCFQnVivXD6WYVai5URAwbB6pBio9QVez3Wq7GJazjhZf46hcouuLSFRw0W_437KJvRoXzYnTPS07CNWIn5WleC5oggNVYL4CXrMbloVCIOEQuBkrZilD1Ny1Xk2Ce_Zyuu6xrMdvtS_XZWUlqmkpQVMxWwfve74Ss8N1fp7gR946hGRZt2dcnwksQiyUueyfdrpKMneTLgOGRdaPFNuQKtlc7glYfKhiFHD1VNDUTq-taZmZA"/>
+</div>
+<span class="text-xs text-gray-500 flex items-center gap-1"><span class="material-icons-round text-[14px]">schedule</span> 30m left</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- COLUMN: COMPLETED -->
+<div class="w-80 flex flex-col h-full bg-neutral-dark/40 rounded-xl border border-neutral-border/50 backdrop-blur-sm">
+<!-- Column Header -->
+<div class="p-4 border-b border-neutral-border/50 flex justify-between items-center sticky top-0 bg-neutral-dark/90 rounded-t-xl backdrop-blur-md z-10">
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-green-500"></div>
+<span class="font-bold text-gray-200 uppercase tracking-wider text-sm">Completed</span>
+<span class="bg-neutral-surface text-gray-400 text-xs px-2 py-0.5 rounded-full border border-neutral-border">8</span>
+</div>
+<button class="text-gray-500 hover:text-white"><span class="material-icons-round text-lg">more_horiz</span></button>
+</div>
+<!-- Cards Container -->
+<div class="p-3 flex-1 overflow-y-auto custom-scrollbar flex flex-col gap-3">
+<!-- Card 5 -->
+<div class="group bg-neutral-surface/60 hover:bg-neutral-surface/80 border border-transparent hover:border-green-500/30 p-4 rounded-lg shadow-sm transition-all cursor-grab active:cursor-grabbing relative overflow-hidden opacity-80 hover:opacity-100">
+<div class="absolute top-0 left-0 w-1 h-full bg-green-500 transition-colors"></div>
+<div class="flex justify-between items-start mb-3 pl-2">
+<div>
+<span class="bg-green-500/10 text-green-400 border border-green-500/20 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wide flex items-center gap-1 w-max"><span class="material-icons-round text-[10px]">check</span> Done</span>
+<h3 class="text-gray-200 font-mono font-bold text-lg mt-1 line-through decoration-gray-500 decoration-2">LMN-456</h3>
+</div>
+<button class="text-gray-500 hover:text-white"><span class="material-icons-round text-lg">receipt_long</span></button>
+</div>
+<div class="pl-2 space-y-2">
+<div>
+<p class="text-gray-500 text-xs font-medium uppercase">Client</p>
+<span class="text-gray-400 text-sm font-semibold">Ana Gomez</span>
+</div>
+<div class="pt-2 mt-2 border-t border-neutral-border flex justify-between items-center">
+<span class="text-xs text-green-400 bg-green-900/30 px-2 py-0.5 rounded border border-green-900/50">Ready for pickup</span>
+<span class="text-xs text-gray-500">Yesterday</span>
+</div>
+</div>
+</div>
+<!-- Card 6 -->
+<div class="group bg-neutral-surface/60 hover:bg-neutral-surface/80 border border-transparent hover:border-green-500/30 p-4 rounded-lg shadow-sm transition-all cursor-grab active:cursor-grabbing relative overflow-hidden opacity-80 hover:opacity-100">
+<div class="absolute top-0 left-0 w-1 h-full bg-green-500 transition-colors"></div>
+<div class="flex justify-between items-start mb-3 pl-2">
+<div>
+<span class="bg-green-500/10 text-green-400 border border-green-500/20 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wide flex items-center gap-1 w-max"><span class="material-icons-round text-[10px]">check</span> Done</span>
+<h3 class="text-gray-200 font-mono font-bold text-lg mt-1 line-through decoration-gray-500 decoration-2">BMW-X5</h3>
+</div>
+<button class="text-gray-500 hover:text-white"><span class="material-icons-round text-lg">receipt_long</span></button>
+</div>
+<div class="pl-2 space-y-2">
+<div>
+<p class="text-gray-500 text-xs font-medium uppercase">Client</p>
+<span class="text-gray-400 text-sm font-semibold">Dr. Strange</span>
+</div>
+<div class="pt-2 mt-2 border-t border-neutral-border flex justify-between items-center">
+<span class="text-xs text-gray-400">Paid &amp; Delivered</span>
+<span class="text-xs text-gray-500">2d ago</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- COLUMN: CANCELLED -->
+<div class="w-80 flex flex-col h-full bg-neutral-dark/40 rounded-xl border border-neutral-border/50 backdrop-blur-sm">
+<!-- Column Header -->
+<div class="p-4 border-b border-neutral-border/50 flex justify-between items-center sticky top-0 bg-neutral-dark/90 rounded-t-xl backdrop-blur-md z-10">
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-red-900"></div>
+<span class="font-bold text-gray-400 uppercase tracking-wider text-sm">Cancelled</span>
+<span class="bg-neutral-surface text-gray-400 text-xs px-2 py-0.5 rounded-full border border-neutral-border">1</span>
+</div>
+<button class="text-gray-500 hover:text-white"><span class="material-icons-round text-lg">more_horiz</span></button>
+</div>
+<!-- Cards Container -->
+<div class="p-3 flex-1 overflow-y-auto custom-scrollbar flex flex-col gap-3">
+<!-- Card 7 -->
+<div class="group bg-neutral-surface/40 hover:bg-neutral-surface/60 border border-transparent hover:border-red-900/50 p-4 rounded-lg shadow-sm transition-all cursor-grab active:cursor-grabbing relative overflow-hidden grayscale hover:grayscale-0">
+<div class="absolute top-0 left-0 w-1 h-full bg-red-900 transition-colors"></div>
+<div class="flex justify-between items-start mb-3 pl-2">
+<div>
+<span class="bg-red-900/20 text-red-400 border border-red-900/30 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wide">Declined</span>
+<h3 class="text-gray-400 font-mono font-bold text-lg mt-1">QWE-111</h3>
+</div>
+<button class="text-gray-500 hover:text-white"><span class="material-icons-round text-lg">delete_outline</span></button>
+</div>
+<div class="pl-2 space-y-2">
+<div>
+<p class="text-gray-500 text-xs font-medium uppercase">Reason</p>
+<p class="text-red-400 text-sm italic">"Parts unavailable for import"</p>
+</div>
+<div class="pt-2 mt-2 border-t border-neutral-border flex justify-between items-center">
+<span class="text-xs text-gray-500">Archived</span>
+<span class="text-xs text-gray-500">Oct 24</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Add Column Placeholder -->
+<button class="w-12 h-12 mt-4 rounded-full border-2 border-dashed border-neutral-border text-gray-500 hover:text-primary hover:border-primary flex items-center justify-center transition-all shrink-0">
+<span class="material-icons-round">add</span>
+</button>
+</div>
+</div>
+<!-- Quick Action Floating Button (Mobile/Tablet primarily but nice to have) -->
+<!-- <div class="absolute bottom-6 right-6 z-30">
+                <button class="w-14 h-14 bg-primary rounded-full shadow-lg shadow-primary/40 flex items-center justify-center text-white hover:scale-105 transition-transform">
+                    <span class="material-icons-round text-2xl">add</span>
+                </button>
+            </div> -->
+</main>
+</div>
+</body></html>

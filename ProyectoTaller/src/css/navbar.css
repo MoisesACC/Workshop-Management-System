@@ -1,0 +1,138 @@
+.navbar {
+    background-color: rgba(10, 10, 10, 0.95);
+    backdrop-filter: blur(10px);
+    color: var(--text-main);
+    padding: 1.5rem 0;
+    border-bottom: 2px solid #222;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 1.8rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    color: #fff;
+    letter-spacing: -1px;
+}
+
+.logo span {
+    color: var(--primary-color);
+}
+
+.nav-links {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+}
+
+.nav-link {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-weight: 700;
+    /* Bolder font */
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: var(--primary-color);
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    width: 0%;
+    height: 2px;
+    bottom: -4px;
+    left: 0;
+    background-color: var(--primary-color);
+    transition: width 0.3s;
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+.nav-link.active {
+    color: var(--text-main);
+}
+
+.nav-btn-highlight {
+    background-color: transparent;
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+    padding: 0.6rem 1.2rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    border-radius: 4px;
+    /* Standard rect edges */
+}
+
+.nav-btn-highlight:hover {
+    background-color: var(--primary-color);
+    color: #fff;
+}
+
+/* Specific Location Style */
+.nav-location {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #222;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: #ccc;
+    text-transform: uppercase;
+    transition: color 0.3s;
+}
+
+.nav-location:hover {
+    color: var(--text-main);
+}
+
+.nav-location svg {
+    color: var(--primary-color);
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .nav-links {
+        position: fixed;
+        top: 70px;
+        /* Below navbar */
+        right: 0;
+        height: calc(100vh - 70px);
+        width: 250px;
+        background-color: #0a0a0a;
+        flex-direction: column;
+        padding: 2rem;
+        transform: translateX(100%);
+        transition: transform 0.3s ease-in-out;
+        border-left: 1px solid #333;
+        z-index: 999;
+    }
+
+    .nav-menu.active .nav-links {
+        transform: translateX(0);
+    }
+
+    .nav-toggle {
+        display: block;
+        cursor: pointer;
+        font-size: 1.5rem;
+    }
+}

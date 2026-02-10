@@ -1,0 +1,74 @@
+.dashboard-container {
+    background-color: var(--bg-dark);
+    /* Ensure dark bg */
+    color: var(--text-main);
+    padding: 3rem 0;
+    min-height: 100vh;
+}
+
+.dashboard-header {
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #333;
+    padding-bottom: 1rem;
+}
+
+.dashboard-title {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.welcome-text {
+    font-size: 1.2rem;
+    color: #888;
+}
+
+.card {
+    background: var(--bg-card);
+    /* Dark card */
+    color: #ddd;
+    border: 1px solid #333;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+    padding: 2rem;
+}
+
+.card-title {
+    color: var(--text-main);
+    border-bottom: 1px solid #333;
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+}
+
+.status-text {
+    color: var(--accent-gold);
+    /* Gold for status highlight */
+    font-weight: bold;
+}
+
+.progress-bar-bg {
+    background-color: #333;
+}
+
+.progress-bar-fill {
+    background: linear-gradient(90deg, var(--primary-color), #ff4d4d);
+    box-shadow: 0 0 10px rgba(230, 0, 0, 0.5);
+    /* Glow */
+}
+
+.message-input {
+    background: #222;
+    border: 1px solid #444;
+    color: white;
+}
+
+.message-input:focus {
+    border-color: var(--primary-color);
+    outline: none;
+}
+
+.msg-admin .message-bubble {
+    background-color: #333;
+    color: #ddd;
+}
