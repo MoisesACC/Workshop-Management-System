@@ -1,5 +1,4 @@
-
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
     User, Lock, Bell, Shield, Camera, Save,
     CheckCircle, AlertCircle, Phone, Mail, FileText

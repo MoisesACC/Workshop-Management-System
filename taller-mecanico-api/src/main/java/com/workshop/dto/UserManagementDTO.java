@@ -21,4 +21,9 @@ public class UserManagementDTO {
     private String clientAddress;
     private String clientPhone;
     private String clientDocumentId;
+    // Vehicle Info
+    private String vehicleBrand;
+    private String vehicleModel;
+    private String vehiclePlate;
+    private String lastRequirement;
 }

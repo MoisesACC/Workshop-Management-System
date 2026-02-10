@@ -15,7 +15,10 @@ import {
     Clock,
     ExternalLink,
     Plus,
-    MessageSquare
+    MessageSquare,
+    Trash2,
+    Car,
+    Info
 } from 'lucide-react';
 import api from '../services/api';
 
@@ -24,6 +27,8 @@ const AdminUsers = () => {
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
     const [filter, setFilter] = useState('all'); // all, complete, incomplete
+    const [selectedUser, setSelectedUser] = useState(null);
+    const [isDeleting, setIsDeleting] = useState(false);
 
     useEffect(() => {
         fetchUsers();
@@ -37,6 +42,21 @@ const AdminUsers = () => {
             console.error("Error fetching users for management:", error);
         } finally {
             setLoading(false);
+        }
+    };
+
+    const deleteUser = async (id) => {
+        if (!window.confirm("¿Estás seguro de que deseas eliminar esta cuenta permanentemente?")) return;
+
+        setIsDeleting(true);
+        try {
+            await api.delete(`/users/${id}`);
+            setUsers(users.filter(u => u.id !== id));
+            if (selectedUser?.id === id) setSelectedUser(null);
+        } catch (error) {
+            alert("Error al eliminar usuario.");
+        } finally {
+            setIsDeleting(false);
         }
     };
 
@@ -160,9 +180,20 @@ const AdminUsers = () => {
                                             </div>
                                         </div>
                                     </div>
-                                    <button className="text-gray-500 hover:text-white transition-colors">
-                                        <MoreHorizontal size={20} />
-                                    </button>
+                                    <div className="flex gap-2">
+                                        <button
+                                            onClick={() => deleteUser(user.id)}
+                                            className="text-gray-600 hover:text-primary transition-colors p-2"
+                                        >
+                                            <Trash2 size={18} />
+                                        </button>
+                                        <button
+                                            onClick={() => setSelectedUser(user)}
+                                            className="text-gray-500 hover:text-white transition-colors p-2"
+                                        >
+                                            <MoreHorizontal size={20} />
+                                        </button>
+                                    </div>
                                 </div>
 
                                 <div className="space-y-3 relative z-10">
@@ -195,31 +226,136 @@ const AdminUsers = () => {
                                     >
                                         <Plus size={14} /> Generar Cotización
                                     </button>
-                                    <button
-                                        className="w-full py-3 rounded-xl text-[10px] font-black uppercase tracking-widest border border-white/5 bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white transition-all flex items-center justify-center gap-2"
-                                    >
-                                        <MessageSquare size={14} /> Contactar
-                                    </button>
                                 </div>
 
                                 <div className="mt-8 pt-6 border-t border-white/5 flex justify-between items-center">
                                     <div className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">
                                         ID: #{user.id}
                                     </div>
-                                    {user.clientId && (
-                                        <button
-                                            onClick={() => window.location.href = `/admin/clients?search=${user.documentId}`}
-                                            className="flex items-center gap-2 text-[10px] font-black text-primary uppercase tracking-widest hover:translate-x-1 transition-transform"
-                                        >
-                                            Ver Perfil <ExternalLink size={10} />
-                                        </button>
-                                    )}
+                                    <button
+                                        onClick={() => setSelectedUser(user)}
+                                        className="flex items-center gap-2 text-[10px] font-black text-primary uppercase tracking-widest hover:translate-x-1 transition-transform"
+                                    >
+                                        Detalles Completos <Info size={12} />
+                                    </button>
                                 </div>
                             </motion.div>
                         ))}
                     </AnimatePresence>
                 </div>
             )}
+
+            {/* User Details Modal */}
+            <AnimatePresence>
+                {selectedUser && (
+                    <div className="fixed inset-0 z-[100] flex items-center justify-center p-6">
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onClick={() => setSelectedUser(null)}
+                            className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+                        />
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                            animate={{ opacity: 1, scale: 1, y: 0 }}
+                            exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                            className="relative bg-surface-darker w-full max-w-2xl rounded-[2.5rem] border border-white/10 overflow-hidden shadow-2xl"
+                        >
+                            <div className="p-8 md:p-12 space-y-8">
+                                <div className="flex justify-between items-start">
+                                    <div className="flex items-center gap-6">
+                                        <div className="w-20 h-20 bg-primary/10 rounded-3xl flex items-center justify-center text-3xl font-black italic text-primary border border-primary/20">
+                                            {getInitials(selectedUser.fullName || selectedUser.username)}
+                                        </div>
+                                        <div>
+                                            <h2 className="text-3xl font-black italic uppercase tracking-tighter text-white leading-none mb-2">
+                                                {selectedUser.fullName || selectedUser.username}
+                                            </h2>
+                                            <p className="text-gray-500 font-bold uppercase tracking-widest text-[10px]">{selectedUser.email}</p>
+                                        </div>
+                                    </div>
+                                    <button
+                                        onClick={() => setSelectedUser(null)}
+                                        className="p-2 text-gray-500 hover:text-white transition-colors"
+                                    >
+                                        <ExternalLink className="rotate-45" size={24} />
+                                    </button>
+                                </div>
+
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                    {/* Personal Info */}
+                                    <div className="space-y-6">
+                                        <h4 className="text-primary font-black uppercase text-xs tracking-[0.3em] flex items-center gap-2">
+                                            <Shield size={14} /> Información Legal
+                                        </h4>
+                                        <div className="space-y-4">
+                                            <div>
+                                                <p className="text-[9px] font-bold text-gray-600 uppercase tracking-widest mb-1">Documento Identidad</p>
+                                                <p className="text-white font-black">{selectedUser.clientDocumentId || 'No proporcionado'}</p>
+                                            </div>
+                                            <div>
+                                                <p className="text-[9px] font-bold text-gray-600 uppercase tracking-widest mb-1">Dirección Registrada</p>
+                                                <p className="text-white font-medium text-sm leading-relaxed">{selectedUser.clientAddress || 'Sin dirección'}</p>
+                                            </div>
+                                            <div>
+                                                <p className="text-[9px] font-bold text-gray-600 uppercase tracking-widest mb-1">Contacto Directo</p>
+                                                <p className="text-primary font-black">{selectedUser.clientPhone || 'Sin teléfono'}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Vehicle Info */}
+                                    <div className="space-y-6">
+                                        <h4 className="text-primary font-black uppercase text-xs tracking-[0.3em] flex items-center gap-2">
+                                            <Car size={14} /> Unidad Detectada
+                                        </h4>
+                                        {selectedUser.vehiclePlate ? (
+                                            <div className="bg-white/5 border border-white/5 rounded-3xl p-6 space-y-4">
+                                                <div className="flex justify-between items-center text-xs">
+                                                    <span className="text-gray-500 font-bold uppercase">Placa / ID</span>
+                                                    <span className="bg-gray-800 px-3 py-1 rounded text-white font-black">{selectedUser.vehiclePlate}</span>
+                                                </div>
+                                                <div className="flex justify-between items-center text-xs">
+                                                    <span className="text-gray-500 font-bold uppercase">Marca/Modelo</span>
+                                                    <span className="text-white font-black italic uppercase">{selectedUser.vehicleBrand} {selectedUser.vehicleModel}</span>
+                                                </div>
+                                                <div className="pt-4 border-t border-white/5">
+                                                    <p className="text-[9px] font-bold text-gray-600 uppercase tracking-widest mb-2 flex items-center gap-2"><MessageSquare size={10} /> Requerimiento de Cliente</p>
+                                                    <p className="text-gray-400 text-xs italic font-medium leading-relaxed">
+                                                        "{selectedUser.lastRequirement || 'Sin solicitud específica'}"
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        ) : (
+                                            <div className="p-8 text-center bg-white/5 rounded-3xl border border-dashed border-white/10">
+                                                <Car size={32} className="text-gray-700 mx-auto mb-4" />
+                                                <p className="text-[10px] text-gray-500 uppercase font-black tracking-widest">Sin vehículos registrados</p>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+
+                                <div className="pt-8 border-t border-white/10 flex flex-col sm:flex-row gap-4">
+                                    <button
+                                        onClick={() => window.location.href = `/admin/orders/new?clientId=${selectedUser.clientId}`}
+                                        disabled={!selectedUser.clientId}
+                                        className="flex-1 bg-primary text-white font-black py-4 rounded-2xl uppercase tracking-[0.2em] text-xs hover:bg-red-700 transition-all flex items-center justify-center gap-2 shadow-xl shadow-primary/20"
+                                    >
+                                        <Plus size={16} /> Crear Orden
+                                    </button>
+                                    <button
+                                        onClick={() => deleteUser(selectedUser.id)}
+                                        className="flex-1 bg-white/5 border border-white/10 text-gray-500 font-black py-4 rounded-2xl uppercase tracking-[0.2em] text-xs hover:bg-red-900/20 hover:text-red-500 hover:border-red-500/20 transition-all flex items-center justify-center gap-2"
+                                    >
+                                        <Trash2 size={16} /> Eliminar Cuenta
+                                    </button>
+                                </div>
+                            </div>
+                        </motion.div>
+                    </div>
+                )}
+            </AnimatePresence>
         </div>
     );
 };

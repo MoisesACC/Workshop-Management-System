@@ -3,7 +3,6 @@ package com.workshop.controller;
 import com.workshop.domain.*;
 import com.workshop.dto.CustomerDashboardDTO;
 import com.workshop.repository.ClientRepository;
-import com.workshop.repository.WorkOrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +17,6 @@ import java.util.List;
 public class CustomerController {
 
         private final ClientRepository clientRepository;
-        private final WorkOrderRepository workOrderRepository;
 
         @GetMapping("/{userId}/dashboard")
         public ResponseEntity<CustomerDashboardDTO> getDashboard(@PathVariable Long userId) {

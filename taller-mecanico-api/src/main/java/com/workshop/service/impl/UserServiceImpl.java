@@ -17,7 +17,6 @@ import com.workshop.repository.WorkOrderRepository;
 import java.util.List;
 import java.util.Optional;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -43,7 +42,7 @@ public class UserServiceImpl implements UserService {
                     !client.getDocumentId().startsWith("WEB-") &&
                     client.getAddress() != null;
 
-            return UserManagementDTO.builder()
+            UserManagementDTO.UserManagementDTOBuilder builder = UserManagementDTO.builder()
                     .id(user.getId())
                     .username(user.getUsername())
                     .email(user.getEmail())
@@ -54,8 +53,25 @@ public class UserServiceImpl implements UserService {
                     .isProfileComplete(isComplete)
                     .clientAddress(client != null ? client.getAddress() : null)
                     .clientPhone(client != null ? client.getPhone() : user.getPhone())
-                    .clientDocumentId(client != null ? client.getDocumentId() : null)
-                    .build();
+                    .clientDocumentId(client != null ? client.getDocumentId() : null);
+
+            // Fetch Vehicle Info if client exists
+            if (client != null) {
+                List<Vehicle> vehicles = vehicleRepository.findByClientId(client.getId());
+                if (!vehicles.isEmpty()) {
+                    Vehicle v = vehicles.get(0);
+                    builder.vehicleBrand(v.getBrand())
+                            .vehicleModel(v.getModel())
+                            .vehiclePlate(v.getLicensePlate());
+                }
+
+                // Fetch Last Requirement (from last QUOTE)
+                workOrderRepository
+                        .findTopByClientIdAndStatusOrderByCreatedAtDesc(client.getId(), WorkOrder.Status.QUOTE)
+                        .ifPresent(quote -> builder.lastRequirement(quote.getNotes()));
+            }
+
+            return builder.build();
         }).toList();
     }
 

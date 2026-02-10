@@ -13,4 +13,7 @@ public interface WorkOrderRepository extends JpaRepository<WorkOrder, Long> {
 
     @Query("SELECT SUM(w.totalActualCost) FROM WorkOrder w WHERE w.status = 'COMPLETED'")
     BigDecimal sumTotalRevenue();
+
+    java.util.Optional<WorkOrder> findTopByClientIdAndStatusOrderByCreatedAtDesc(Long clientId,
+            WorkOrder.Status status);
 }
