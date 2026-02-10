@@ -4,11 +4,17 @@ import {
     Wrench, Settings, LogOut, FileText, Plus,
     Package, Map
 } from 'lucide-react';
-import { NavLink } from 'react-router-dom';
+import { useNavigate, NavLink } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 const Sidebar = () => {
     const { logout, user } = useAuth();
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        logout();
+        navigate('/');
+    };
 
     const menuItems = [
         { icon: <LayoutDashboard size={20} />, label: "Dashboard", path: "/admin" },
@@ -76,7 +82,7 @@ const Sidebar = () => {
                         <p className="text-sm font-bold text-white truncate">{user?.fullName || user?.name || 'Administrador'}</p>
                         <p className="text-xs text-gray-500 truncate">{user?.role || 'Jefe de Taller'}</p>
                     </div>
-                    <button onClick={logout} className="ml-auto text-gray-400 hover:text-primary transition-colors">
+                    <button onClick={handleLogout} className="ml-auto text-gray-400 hover:text-primary transition-colors">
                         <LogOut size={20} />
                     </button>
                 </div>

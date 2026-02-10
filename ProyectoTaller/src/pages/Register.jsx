@@ -7,12 +7,14 @@ import api from '../services/api';
 const Register = () => {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
+        fullName: '',
         username: '',
         email: '',
         password: '',
         confirmPassword: ''
     });
     const [error, setError] = useState('');
+    const [success, setSuccess] = useState(false);
     const [loading, setLoading] = useState(false);
 
     const handleChange = (e) => {
@@ -33,14 +35,19 @@ const Register = () => {
         setLoading(true);
         try {
             await api.post('/auth/register', {
+                fullName: formData.fullName,
                 username: formData.username,
                 email: formData.email,
                 password: formData.password,
                 role: 'USER'
             });
-            navigate('/login');
+            setSuccess(true);
+            setTimeout(() => {
+                navigate('/login');
+            }, 3000);
         } catch (error) {
-            setError('Error al registrar. El usuario o correo podrían ya estar en uso.');
+            const message = error.response?.data || 'Error al registrar. El usuario o correo podrían ya estar en uso.';
+            setError(message);
             console.error('Registration failed', error);
         } finally {
             setLoading(false);
@@ -65,10 +72,35 @@ const Register = () => {
                 <div className="bg-surface-dark/80 backdrop-blur-xl border border-white/10 p-8 rounded-3xl shadow-2xl">
                     <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {error && (
-                            <div className="md:col-span-2 bg-primary/10 border border-primary/20 text-primary text-sm p-4 rounded-xl text-center">
+                            <div className="md:col-span-2 bg-primary/10 border border-primary/20 text-primary text-sm p-4 rounded-xl text-center font-medium animate-in fade-in slide-in-from-top-4 duration-300">
                                 {error}
                             </div>
                         )}
+
+                        {success && (
+                            <div className="md:col-span-2 bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 text-sm p-4 rounded-xl text-center font-bold animate-in fade-in slide-in-from-top-4 duration-300">
+                                <div className="flex items-center justify-center gap-2">
+                                    <CheckCircle size={18} />
+                                    ¡Registro exitoso! Serás redirigido al login en breve...
+                                </div>
+                            </div>
+                        )}
+
+                        <div className="space-y-2 md:col-span-2">
+                            <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Nombre Completo</label>
+                            <div className="relative group">
+                                <User className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-primary transition-colors" size={18} />
+                                <input
+                                    type="text"
+                                    name="fullName"
+                                    className="w-full bg-background-dark/50 border border-white/10 rounded-2xl py-4 pl-12 pr-4 text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-transparent transition-all"
+                                    placeholder="Ej. Juan Perez"
+                                    value={formData.fullName}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </div>
+                        </div>
 
                         <div className="space-y-2 md:col-span-2">
                             <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Nombre de Usuario</label>

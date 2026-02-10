@@ -5,11 +5,14 @@ import {
     MoreVertical, Edit, Trash2, Calendar, FileText
 } from 'lucide-react';
 import api from '../services/api';
+import QuickQuoteModal from '../components/QuickQuoteModal';
 
 const Clients = () => {
     const [clients, setClients] = useState([]);
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
+    const [selectedClient, setSelectedClient] = useState(null);
+    const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
 
     useEffect(() => {
         fetchClients();
@@ -80,7 +83,7 @@ const Clients = () => {
                         <div key={client.id} className="bg-surface-dark p-6 rounded-xl border border-white/5 group hover:border-primary/50 transition-all shadow-sm">
                             <div className="flex justify-between items-start mb-4">
                                 <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xl uppercase">
-                                    {client.firstName[0]}{client.lastName[0]}
+                                    {client.firstName?.[0] || '?'}{client.lastName?.[0] || ''}
                                 </div>
                                 <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                                     <button className="p-1.5 text-gray-500 hover:text-white hover:bg-white/5 rounded"><Edit size={16} /></button>
@@ -105,8 +108,14 @@ const Clients = () => {
                             </div>
 
                             <div className="flex items-center justify-between pt-4 border-t border-white/5">
-                                <button className="text-xs font-semibold text-primary hover:underline flex items-center gap-1">
-                                    <FileText size={14} /> Ver Historial
+                                <button
+                                    onClick={() => {
+                                        setSelectedClient(client);
+                                        setIsQuoteModalOpen(true);
+                                    }}
+                                    className="text-xs font-semibold text-primary hover:underline flex items-center gap-1"
+                                >
+                                    <FileText size={14} /> Cotizar
                                 </button>
                                 <button className="text-xs font-semibold text-gray-400 hover:text-white flex items-center gap-1">
                                     <Calendar size={14} /> Agendar Turno
@@ -123,6 +132,14 @@ const Clients = () => {
                     </div>
                 )}
             </div>
+            {selectedClient && (
+                <QuickQuoteModal
+                    isOpen={isQuoteModalOpen}
+                    onClose={() => setIsQuoteModalOpen(false)}
+                    client={selectedClient}
+                    onQuoteCreated={fetchClients}
+                />
+            )}
         </div>
     );
 };

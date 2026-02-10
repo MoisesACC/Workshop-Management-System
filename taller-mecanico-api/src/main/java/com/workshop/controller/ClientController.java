@@ -16,7 +16,9 @@ public class ClientController {
 
     @GetMapping
     public ResponseEntity<List<com.workshop.dto.ClientDTO>> findAll() {
-        return ResponseEntity.ok(service.findAll().stream()
+        List<Client> clients = service.findAll();
+        System.out.println("DEBUG: Finding all clients. Count: " + clients.size());
+        return ResponseEntity.ok(clients.stream()
                 .map(mapper::toClientDTO)
                 .toList());
     }

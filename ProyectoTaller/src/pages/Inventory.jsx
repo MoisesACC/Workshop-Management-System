@@ -50,9 +50,9 @@ const Inventory = () => {
             {/* KPI Stats */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 {[
-                    { label: "Items Totales", value: "0", trend: "0%", icon: <Package />, color: "primary" },
-                    { label: "Valor de Stock", value: "$0.00", icon: <TrendingUp />, color: "primary" },
-                    { label: "Alertas Stock Bajo", value: "0 Items", icon: <AlertTriangle />, color: "red", highlight: false },
+                    { label: "Items Totales", value: items.length.toString(), trend: "0%", icon: <Package />, color: "primary" },
+                    { label: "Valor de Stock", value: `$${items.reduce((acc, item) => acc + (item.unitPrice * item.quantity), 0).toLocaleString()}`, icon: <TrendingUp />, color: "primary" },
+                    { label: "Alertas Stock Bajo", value: `${items.filter(i => i.quantity <= (i.minimumStock || 5)).length} Items`, icon: <AlertTriangle />, color: "red", highlight: items.some(i => i.quantity <= (i.minimumStock || 5)) },
                     { label: "Ordenes Entrantes", value: "0 Ordenes", icon: <Truck />, color: "primary" },
                 ].map((s, i) => (
                     <div key={i} className={`bg-surface-dark p-5 rounded-xl border border-white/5 shadow-sm hover:border-primary/30 transition-colors group relative overflow-hidden ${s.highlight ? 'border-l-4 border-l-primary' : ''}`}>
@@ -116,44 +116,53 @@ const Inventory = () => {
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-white/5">
-                            {items.map((item) => (
+                            {items.length > 0 ? items.map((item) => (
                                 <tr key={item.id} className="group hover:bg-white/5 transition-colors relative">
                                     <td className="px-6 py-4">
                                         <div className="flex items-center gap-3">
-                                            {item.status === 'Low Stock' && <div className="absolute left-0 top-0 bottom-0 w-1 bg-primary"></div>}
+                                            {(item.quantity <= (item.minimumStock || 5)) && <div className="absolute left-0 top-0 bottom-0 w-1 bg-primary"></div>}
                                             <div className="w-10 h-10 rounded bg-gray-800 flex items-center justify-center overflow-hidden flex-shrink-0">
                                                 <Package className="text-gray-500" size={20} />
                                             </div>
                                             <div>
                                                 <p className="text-sm font-bold text-white">{item.name}</p>
-                                                <p className="text-xs text-gray-500">Brand: {item.brand}</p>
+                                                <p className="text-xs text-gray-500">Code: {item.code}</p>
                                             </div>
                                         </div>
                                     </td>
                                     <td className="px-6 py-4 text-sm text-gray-400">{item.category}</td>
-                                    <td className="px-6 py-4 text-sm font-medium text-white">${item.price.toFixed(2)}</td>
+                                    <td className="px-6 py-4 text-sm font-medium text-white">${item.unitPrice?.toFixed(2) || '0.00'}</td>
                                     <td className="px-6 py-4">
                                         <div className="w-full max-w-[100px]">
                                             <div className="flex justify-between text-xs mb-1">
-                                                <span className={`font-bold ${item.status === 'Low Stock' ? 'text-primary' : 'text-gray-300'}`}>{item.stock} u</span>
-                                                <span className="text-gray-600">/ {item.max}</span>
+                                                <span className={`font-bold ${(item.quantity <= (item.minimumStock || 5)) ? 'text-primary' : 'text-gray-300'}`}>{item.quantity} u</span>
+                                                <span className="text-gray-600">/ {item.minimumStock || 10}</span>
                                             </div>
                                             <div className="w-full bg-surface-darker rounded-full h-1.5 overflow-hidden">
-                                                <div className={`h-1.5 rounded-full ${item.status === 'Low Stock' ? 'bg-primary' : 'bg-emerald-500'}`} style={{ width: `${(item.stock / item.max) * 100}%` }}></div>
+                                                <div
+                                                    className={`h-1.5 rounded-full ${(item.quantity <= (item.minimumStock || 5)) ? 'bg-primary' : 'bg-emerald-500'}`}
+                                                    style={{ width: `${Math.min((item.quantity / (item.minimumStock || 10)) * 100, 100)}%` }}
+                                                ></div>
                                             </div>
                                         </div>
                                     </td>
                                     <td className="px-6 py-4">
-                                        <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold border ${item.status === 'Low Stock' ? 'bg-primary/10 text-primary border-primary/20' : 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20'}`}>
-                                            {item.status === 'Low Stock' && <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>}
-                                            {item.status === 'Low Stock' ? 'Stock Bajo' : 'En Stock'}
+                                        <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold border ${(item.quantity <= (item.minimumStock || 5)) ? 'bg-primary/10 text-primary border-primary/20' : 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20'}`}>
+                                            {(item.quantity <= (item.minimumStock || 5)) && <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>}
+                                            {(item.quantity <= (item.minimumStock || 5)) ? 'Stock Bajo' : 'En Stock'}
                                         </span>
                                     </td>
                                     <td className="px-6 py-4 text-right">
                                         <button className="text-gray-500 hover:text-white hover:bg-primary p-1.5 rounded transition-all"><Edit size={16} /></button>
                                     </td>
                                 </tr>
-                            ))}
+                            )) : (
+                                <tr>
+                                    <td colSpan="6" className="px-6 py-10 text-center text-gray-500 italic">
+                                        No hay repuestos en el inventario.
+                                    </td>
+                                </tr>
+                            )}
                         </tbody>
                     </table>
                 </div>

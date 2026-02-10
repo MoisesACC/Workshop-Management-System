@@ -12,4 +12,6 @@ public interface WorkOrderService extends BaseService<WorkOrder, Long> {
     void addPartToTask(Long taskId, Long partId, Integer quantity);
 
     void updateStatus(Long workOrderId, WorkOrder.Status status);
+
+    WorkOrder createQuickQuote(com.workshop.dto.QuickQuoteRequest request);
 }

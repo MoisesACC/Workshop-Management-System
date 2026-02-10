@@ -25,17 +25,19 @@ public class UserController extends BaseController<User, Long, UserService> {
         return ResponseEntity.ok(service.existsByEmail(email));
     }
 
+    @GetMapping("/admin/management")
+    public ResponseEntity<java.util.List<com.workshop.dto.UserManagementDTO>> getManagementList() {
+        return ResponseEntity.ok(service.getUserManagementList());
+    }
+
     @PatchMapping("/{id}/profile")
     public ResponseEntity<User> updateProfile(@PathVariable Long id, @RequestBody ProfileUpdateRequest request) {
-        return service.findById(id).map(user -> {
-            if (request.getFullName() != null)
-                user.setFullName(request.getFullName());
-            if (request.getAvatarUrl() != null)
-                user.setAvatarUrl(request.getAvatarUrl());
-            if (request.getPhone() != null)
-                user.setPhone(request.getPhone());
-            return ResponseEntity.ok(service.save(user));
-        }).orElse(ResponseEntity.notFound().build());
+        try {
+            return ResponseEntity
+                    .ok(service.updateProfile(id, request.getFullName(), request.getPhone(), request.getAvatarUrl()));
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @lombok.Data

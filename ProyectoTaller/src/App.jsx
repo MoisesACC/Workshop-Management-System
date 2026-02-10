@@ -1,5 +1,4 @@
-
-import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Outlet, Navigate } from 'react-router-dom';
 import Layout from './components/Layout';
 import Home from './pages/Home';
 import Login from './pages/Login';
@@ -19,8 +18,15 @@ import { useAuth } from './context/AuthContext';
 // Protected Route Component
 const ProtectedRoute = ({ children, role }) => {
   const { user } = useAuth();
-  if (!user) return <Login />;
-  if (role && user.role !== role) return <div className="text-center p-8">No autorizado</div>;
+
+  if (!user) {
+    return <Navigate to="/" replace />;
+  }
+
+  if (role && user.role !== role) {
+    return <Navigate to="/" replace />;
+  }
+
   return children;
 };
 

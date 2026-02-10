@@ -52,6 +52,13 @@ public class WorkOrderController extends BaseController<WorkOrder, Long, WorkOrd
         return ResponseEntity.ok(mapper.toWorkOrderDTO(workOrder));
     }
 
+    @PostMapping("/quote")
+    public ResponseEntity<com.workshop.dto.WorkOrderDTO> createQuickQuote(
+            @RequestBody com.workshop.dto.QuickQuoteRequest request) {
+        WorkOrder quote = service.createQuickQuote(request);
+        return ResponseEntity.ok(mapper.toWorkOrderDTO(quote));
+    }
+
     @PostMapping("/{id}/tasks")
     public ResponseEntity<com.workshop.dto.WorkOrderTaskDTO> addTask(@PathVariable Long id,
             @RequestBody com.workshop.dto.AddTaskRequest request) {

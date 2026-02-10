@@ -130,7 +130,7 @@ public class WorkOrderServiceImpl implements WorkOrderService {
         // Record Movement
         PartMovement movement = new PartMovement();
         movement.setPart(part);
-        movement.setQuantity(quantity); // Quantity is absolute, Type defines IN/OUT
+        movement.setQuantity(quantity);
         movement.setMovementType(PartMovement.MovementType.OUT);
         movement.setMovementDate(LocalDateTime.now());
         movement.setReason("Used in WorkOrder " + task.getWorkOrder().getWorkOrderNumber());
@@ -146,7 +146,6 @@ public class WorkOrderServiceImpl implements WorkOrderService {
                 .orElseThrow(
                         () -> new com.workshop.exception.ResourceNotFoundException("WorkOrder", "id", workOrderId));
 
-        // Add business logic validation for transitions if needed
         workOrder.setStatus(status);
         if (status == WorkOrder.Status.COMPLETED) {
             workOrder.setActualCompletionDate(LocalDateTime.now());
@@ -157,5 +156,48 @@ public class WorkOrderServiceImpl implements WorkOrderService {
     private void updateWorkOrderCost(WorkOrder workOrder, BigDecimal amountToAdd) {
         workOrder.setTotalActualCost(workOrder.getTotalActualCost().add(amountToAdd));
         workOrderRepository.save(workOrder);
+    }
+
+    @Override
+    public WorkOrder createQuickQuote(com.workshop.dto.QuickQuoteRequest request) {
+        Client client = clientRepository.findById(request.getClientId())
+                .orElseThrow(() -> new com.workshop.exception.ResourceNotFoundException("Client", "id",
+                        request.getClientId()));
+
+        Vehicle vehicle = null;
+        if (request.getVehicleId() != null) {
+            vehicle = vehicleRepository.findById(request.getVehicleId()).orElse(null);
+        }
+
+        WorkOrder quote = new WorkOrder();
+        quote.setWorkOrderNumber("C-" + UUID.randomUUID().toString().substring(0, 6).toUpperCase());
+        quote.setClient(client);
+        quote.setVehicle(vehicle);
+        quote.setStatus(WorkOrder.Status.QUOTE);
+        quote.setPriority(WorkOrder.Priority.LOW);
+        quote.setNotes(request.getNotes());
+        quote.setTotalActualCost(BigDecimal.ZERO);
+        quote.setTotalEstimatedCost(BigDecimal.ZERO);
+
+        WorkOrder savedQuote = workOrderRepository.save(quote);
+
+        BigDecimal total = BigDecimal.ZERO;
+        if (request.getItems() != null) {
+            for (com.workshop.dto.QuickQuoteRequest.QuoteLineItem item : request.getItems()) {
+                WorkOrderTask task = new WorkOrderTask();
+                task.setWorkOrder(savedQuote);
+                task.setQuantity(item.getQuantity());
+                task.setActualPrice(item.getPrice());
+                task.setNotes(item.getDescription());
+                task.setStatus(WorkOrderTask.Status.PENDING);
+                workOrderTaskRepository.save(task);
+
+                total = total.add(item.getPrice().multiply(BigDecimal.valueOf(item.getQuantity())));
+            }
+        }
+
+        savedQuote.setTotalActualCost(total);
+        savedQuote.setTotalEstimatedCost(total);
+        return workOrderRepository.save(savedQuote);
     }
 }

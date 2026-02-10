@@ -62,7 +62,7 @@ public class WorkOrder {
     private List<WorkOrderHistory> workOrderHistories;
 
     public enum Status {
-        PENDING, IN_PROGRESS, COMPLETED, CANCELLED
+        QUOTE, PENDING, IN_PROGRESS, COMPLETED, CANCELLED
     }
 
     public enum Priority {

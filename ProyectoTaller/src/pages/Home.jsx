@@ -8,6 +8,12 @@ import {
 import '../css/home.css'; // Might need to clear this file later or use it for specific non-tailwind needs
 
 const Home = () => {
+    const [sliderPos, setSliderPos] = useState(50);
+
+    const handleSliderChange = (e) => {
+        setSliderPos(e.target.value);
+    };
+
     return (
         <div className="bg-background-dark font-display text-gray-100 antialiased overflow-x-hidden">
 
@@ -18,7 +24,7 @@ const Home = () => {
                     <img
                         alt="Luxury car in dark garage"
                         className="w-full h-full object-cover object-center translate-y-[-10%]"
-                        src="/src/assets/img/banner.jpg"
+                        src="/src/assets/img/carousel-bg-4.jpg"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-background-dark via-background-dark/80 to-background-dark/40"></div>
                 </div>
@@ -158,16 +164,48 @@ const Home = () => {
                             <a href="#booking" className="inline-block mt-4 text-white border-b-2 border-primary pb-1 hover:text-primary transition-colors">Agendar Servicio</a>
                         </div>
 
-                        {/* Simple Comparison Visual */}
-                        <div className="lg:w-1/2 relative w-full h-[400px] rounded-2xl overflow-hidden shadow-2xl border border-white/10 group">
+                        {/* Interactive Comparison Slider */}
+                        <div className="lg:w-1/2 relative w-full h-[400px] md:h-[500px] rounded-2xl overflow-hidden shadow-2xl border border-white/10 group select-none">
+                            {/* After Image (Background) */}
                             <div className="absolute inset-0 w-full h-full">
                                 <img src="/src/assets/img/carousel-2.png" className="w-full h-full object-cover" alt="After" />
-                                <div className="absolute top-4 right-4 bg-primary/90 text-white text-xs font-bold px-3 py-1 rounded">DESPUÉS</div>
+                                <div className="absolute top-4 right-4 bg-primary/90 text-white text-[10px] font-bold px-3 py-1 rounded tracking-widest backdrop-blur-sm">DESPUÉS</div>
                             </div>
-                            <div className="absolute inset-0 w-1/2 h-full overflow-hidden border-r-4 border-white bg-black/50 backdrop-blur-[2px]">
-                                <img src="/src/assets/img/carousel-1.png" className="absolute top-0 left-0 max-w-none w-[200%] h-full object-cover" alt="Before" style={{ width: '200%', maxWidth: 'none' }} />
-                                <div className="absolute top-4 left-4 bg-black/70 text-white text-xs font-bold px-3 py-1 rounded">ANTES</div>
+
+                            {/* Before Image (Clipped) */}
+                            <div
+                                className="absolute inset-0 h-full overflow-hidden border-r-2 border-white/80"
+                                style={{ width: `${sliderPos}%` }}
+                            >
+                                <img
+                                    src="/src/assets/img/carousel-1.png"
+                                    className="absolute top-0 left-0 h-full object-cover"
+                                    alt="Before"
+                                    style={{ width: `${100 / (sliderPos / 100)}%`, maxWidth: 'none' }}
+                                />
+                                <div className="absolute top-4 left-4 bg-black/70 text-white text-[10px] font-bold px-3 py-1 rounded tracking-widest backdrop-blur-sm">ANTES</div>
                             </div>
+
+                            {/* Handle Circle */}
+                            <div
+                                className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-12 h-12 bg-white rounded-full shadow-2xl flex items-center justify-center z-10 pointer-events-none"
+                                style={{ left: `${sliderPos}%` }}
+                            >
+                                <div className="flex gap-1 text-primary">
+                                    <ArrowRight size={14} className="rotate-180" />
+                                    <ArrowRight size={14} />
+                                </div>
+                            </div>
+
+                            {/* Hidden Input Slider (Overlay) */}
+                            <input
+                                type="range"
+                                min="0"
+                                max="100"
+                                value={sliderPos}
+                                onChange={handleSliderChange}
+                                className="absolute inset-0 w-full h-full opacity-0 cursor-ew-resize z-20"
+                            />
                         </div>
                     </div>
                 </div>

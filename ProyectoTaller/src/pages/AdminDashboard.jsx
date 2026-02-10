@@ -1,7 +1,7 @@
 
 import {
     FileText, Clock, CheckCircle, TrendingUp, AlertTriangle,
-    MoreVertical, Calendar as CalendarIcon, Wrench, UserPlus
+    MoreVertical, Calendar as CalendarIcon, Wrench, UserPlus, Package
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import api from '../services/api';
