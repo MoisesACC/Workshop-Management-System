@@ -49,4 +49,9 @@ public class ClientServiceImpl implements ClientService {
                 .filter(c -> c.getLastName().toLowerCase().contains(lastName.toLowerCase()))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public Optional<Client> findByUserId(Long userId) {
+        return repository.findByUserId(userId);
+    }
 }

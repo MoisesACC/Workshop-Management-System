@@ -19,5 +19,8 @@ public interface UserService extends BaseService<User, Long> {
 
     List<UserManagementDTO> getUserManagementList();
 
-    User updateProfile(Long userId, String fullName, String phone, String avatarUrl);
+    User updateProfile(Long userId, String fullName, String phone, String avatarUrl, String documentId,
+            String documentType, String address, String city,
+            String vehiclePlate, String vehicleBrand, String vehicleModel, Integer vehicleYear, Integer vehicleMileage,
+            String vehicleRequirement);
 }

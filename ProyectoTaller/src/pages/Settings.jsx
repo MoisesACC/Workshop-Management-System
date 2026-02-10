@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import {
     User, Lock, Bell, Shield, Camera, Save,
-    CheckCircle, AlertCircle, Phone, Mail
+    CheckCircle, AlertCircle, Phone, Mail, FileText
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
@@ -16,8 +16,34 @@ const Settings = () => {
     const [formData, setFormData] = useState({
         fullName: user?.fullName || user?.name || '',
         phone: user?.phone || '',
-        avatarUrl: user?.avatarUrl || ''
+        avatarUrl: user?.avatarUrl || '',
+        documentId: '',
+        documentType: 'DNI',
+        address: '',
+        city: ''
     });
+
+    useEffect(() => {
+        if (user?.role === 'USER') {
+            fetchClientProfile();
+        }
+    }, [user]);
+
+    const fetchClientProfile = async () => {
+        try {
+            const res = await api.get(`/clients/user/${user.id}`);
+            const client = res.data;
+            setFormData(prev => ({
+                ...prev,
+                documentId: client.documentId || '',
+                documentType: client.documentType || 'DNI',
+                address: client.address || '',
+                city: client.city || ''
+            }));
+        } catch (err) {
+            console.error("Error fetching client profile:", err);
+        }
+    };
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -29,14 +55,17 @@ const Settings = () => {
         e.preventDefault();
         setLoading(true);
         try {
-            // Updated UserController endpoint
+            // Updated UserController endpoint with expanded formData (DNI, Address, City)
             const res = await api.patch(`/users/${user.id}/profile`, formData);
-            updateUserData(res.data);
-            setSuccess(true);
-            setTimeout(() => setSuccess(false), 3000);
+            if (res.data) {
+                updateUserData(res.data);
+                // Also update local state if needed
+                setSuccess(true);
+                setTimeout(() => setSuccess(false), 3000);
+            }
         } catch (err) {
             console.error(err);
-            setError('Error al actualizar el perfil.');
+            setError('Error al actualizar el perfil profesional.');
         } finally {
             setLoading(false);
         }
@@ -56,6 +85,7 @@ const Settings = () => {
                         { id: 'profile', label: 'Mi Perfil', icon: <User size={18} />, active: true },
                         { id: 'security', label: 'Seguridad', icon: <Lock size={18} /> },
                         { id: 'notifications', label: 'Notificaciones', icon: <Bell size={18} /> },
+                        { id: 'workshop', label: 'Datos Taller', icon: <FileText size={18} />, active: false },
                         { id: 'system', label: 'Empresa', icon: <Shield size={18} /> },
                     ].map((item) => (
                         <button
@@ -158,6 +188,87 @@ const Settings = () => {
                                     </div>
                                 </div>
                             </div>
+
+                            {/* Workshop Specific Section */}
+                            {user?.role === 'USER' && (
+                                <div className="space-y-6 pt-6 border-t border-white/5">
+                                    <h4 className="text-sm font-black text-primary uppercase italic tracking-widest flex items-center gap-2">
+                                        <Shield size={16} /> Datos de Taller (Requerido para Cotizaciones)
+                                    </h4>
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                        <div className="space-y-2">
+                                            <label className="text-xs font-bold text-gray-400 uppercase tracking-widest px-1">Tipo de Documento</label>
+                                            <select
+                                                name="documentType"
+                                                value={formData.documentType}
+                                                onChange={handleChange}
+                                                className="w-full bg-surface-darker border border-white/5 rounded-lg py-2 px-4 text-sm text-white focus:ring-1 focus:ring-primary outline-none appearance-none"
+                                            >
+                                                <option value="DNI">DNI</option>
+                                                <option value="PASSPORT">Pasaporte</option>
+                                                <option value="LICENSE">Licencia</option>
+                                            </select>
+                                        </div>
+                                        <div className="space-y-2">
+                                            <label className="text-xs font-bold text-gray-400 uppercase tracking-widest px-1">Número de Documento</label>
+                                            <input
+                                                name="documentId"
+                                                value={formData.documentId}
+                                                onChange={handleChange}
+                                                className="w-full bg-surface-darker border border-white/5 rounded-lg py-2 px-4 text-sm text-white focus:ring-1 focus:ring-primary outline-none"
+                                                placeholder="Ej. 77665544"
+                                            />
+                                        </div>
+                                        <div className="flex flex-col gap-6 sm:col-span-2">
+                                            <div className="space-y-4">
+                                                <div className="flex items-center justify-between">
+                                                    <label className="text-[10px] font-black uppercase tracking-[0.2em] text-primary px-1">Número de DNI / Documento</label>
+                                                    <span className="flex items-center gap-1.5 text-[8px] font-black uppercase tracking-widest text-orange-500 bg-orange-500/10 px-2 py-0.5 rounded border border-orange-500/10">
+                                                        <Shield size={10} /> Requerido para Citas
+                                                    </span>
+                                                </div>
+                                                <div className="relative group">
+                                                    <FileText className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-primary transition-colors" size={20} />
+                                                    <input
+                                                        type="text"
+                                                        className="w-full bg-surface-darker/50 border border-white/10 rounded-2xl py-4 pl-12 pr-4 text-white focus:outline-none focus:border-primary transition-all shadow-inner font-bold"
+                                                        value={formData.documentId}
+                                                        onChange={(e) => setFormData({ ...formData, documentId: e.target.value })}
+                                                    />
+                                                </div>
+                                            </div>
+
+                                            <div className="space-y-4">
+                                                <div className="flex items-center justify-between">
+                                                    <label className="text-[10px] font-black uppercase tracking-[0.2em] text-primary px-1">Dirección Oficial</label>
+                                                    <span className="flex items-center gap-1.5 text-[8px] font-black uppercase tracking-widest text-primary bg-primary/10 px-2 py-0.5 rounded border border-primary/10">
+                                                        <MapPin size={10} /> Facturación Legal
+                                                    </span>
+                                                </div>
+                                                <div className="relative group">
+                                                    <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-primary transition-colors" size={20} />
+                                                    <input
+                                                        type="text"
+                                                        className="w-full bg-surface-darker/50 border border-white/10 rounded-2xl py-4 pl-12 pr-4 text-white focus:outline-none focus:border-primary transition-all shadow-inner font-bold"
+                                                        value={formData.address}
+                                                        onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="space-y-2">
+                                            <label className="text-xs font-bold text-gray-400 uppercase tracking-widest px-1">Ciudad</label>
+                                            <input
+                                                name="city"
+                                                value={formData.city}
+                                                onChange={handleChange}
+                                                className="w-full bg-surface-darker border border-white/5 rounded-lg py-2 px-4 text-sm text-white focus:ring-1 focus:ring-primary outline-none"
+                                                placeholder="Ej. Lima"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
 
                             {/* Status Messages */}
                             {success && (

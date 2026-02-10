@@ -12,6 +12,7 @@ import Clients from './pages/Clients';
 import Services from './pages/Services';
 import Finances from './pages/Finances';
 import Settings from './pages/Settings';
+import UsersPage from './pages/Users';
 import AdminLayout from './components/AdminLayout';
 import { useAuth } from './context/AuthContext';
 
@@ -65,6 +66,7 @@ function App() {
           <Route path="orders" element={<Orders />} />
           <Route path="orders/new" element={<NewOrder />} />
           <Route path="clients" element={<Clients />} />
+          <Route path="users" element={<UsersPage />} />
           <Route path="services" element={<Services />} />
           <Route path="finances" element={<Finances />} />
           <Route path="settings" element={<Settings />} />

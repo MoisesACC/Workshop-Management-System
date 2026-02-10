@@ -9,4 +9,6 @@ public interface ClientService extends BaseService<Client, Long> {
     Optional<Client> findByDocumentId(String documentId);
 
     List<Client> findByLastName(String lastName);
+
+    Optional<Client> findByUserId(Long userId);
 }

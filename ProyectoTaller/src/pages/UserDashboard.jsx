@@ -3,7 +3,7 @@ import {
     Activity, Box, Calendar, CheckCircle, ChevronRight,
     ClipboardList, Clock, CreditCard, Droplets, Gauge,
     History, MapPin, MessageSquare, ShieldCheck,
-    Zap, AlertTriangle, Search, Info
+    Zap, AlertTriangle, Search, Info, UserPlus, FileText
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
@@ -383,6 +383,315 @@ const HistoryView = ({ data }) => {
     );
 };
 
+const ProfileActivationCenter = ({ onComplete }) => {
+    const { user, updateUserData } = useAuth();
+    const [step, setStep] = useState(1);
+    const [loading, setLoading] = useState(false);
+    const [formData, setFormData] = useState({
+        documentId: '',
+        documentType: 'DNI',
+        address: '',
+        city: 'Lima',
+        phone: user?.phone || '',
+        // Vehicle Fields
+        vehiclePlate: '',
+        vehicleBrand: '',
+        vehicleModel: '',
+        vehicleYear: new Date().getFullYear(),
+        vehicleMileage: '',
+        vehicleRequirement: ''
+    });
+
+    const handleSave = async () => {
+        setLoading(true);
+        try {
+            const res = await api.patch(`/users/${user.id}/profile`, {
+                ...formData,
+                fullName: user.fullName || user.name,
+                vehicleYear: parseInt(formData.vehicleYear),
+                vehicleMileage: parseInt(formData.vehicleMileage) || 0
+            });
+            updateUserData(res.data);
+            onComplete();
+        } catch (err) {
+            console.error("Error al activar perfil:", err);
+            alert("Hubo un error al guardar tus datos.");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return (
+        <div className="bg-[#0a0a0b] border border-white/5 rounded-[2.5rem] p-12 shadow-2xl relative overflow-hidden">
+            {/* Dynamic background effect */}
+            <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-[120px] -z-10 animate-pulse"></div>
+            <div className="absolute bottom-0 left-0 w-64 h-64 bg-primary/5 rounded-full blur-[100px] -z-10"></div>
+
+            <div className="max-w-3xl mx-auto">
+                <AnimatePresence mode="wait">
+                    {step === 1 && (
+                        <motion.div
+                            key="step1"
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 1.05 }}
+                            className="space-y-8"
+                        >
+                            <div className="space-y-4">
+                                <div className="inline-flex p-4 rounded-3xl bg-primary/10 text-primary border border-primary/20 shadow-[0_0_30px_rgba(216,3,39,0.1)]">
+                                    <ShieldCheck size={40} />
+                                </div>
+                                <h2 className="text-3xl font-black text-white italic uppercase tracking-tighter leading-none mb-2">
+                                    Activa tu Panel <span className="text-primary">Premium</span>
+                                </h2>
+                                <p className="text-gray-400 text-sm leading-relaxed font-medium">
+                                    Para brindarte servicios en tiempo real, agendar citas y generar cotizaciones válidas, necesitamos verificar tu identidad legal y datos de contacto oficiales.
+                                </p>
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 text-left">
+                                <div className="p-6 rounded-3xl bg-white/5 border border-white/5 hover:border-primary/20 transition-all group">
+                                    <MessageSquare className="text-primary mb-4 group-hover:scale-110 transition-transform" size={24} />
+                                    <h4 className="text-white font-black text-[10px] uppercase tracking-[0.2em] mb-2">Contacto de Especialista</h4>
+                                    <p className="text-[10px] text-gray-500 uppercase leading-relaxed font-bold">Recibe notificaciones críticas y aprobaciones técnicas directas de tu mecánico.</p>
+                                </div>
+                                <div className="p-6 rounded-3xl bg-white/5 border border-white/5 hover:border-primary/20 transition-all group">
+                                    <ClipboardList className="text-primary mb-4 group-hover:scale-110 transition-transform" size={24} />
+                                    <h4 className="text-white font-black text-[10px] uppercase tracking-[0.2em] mb-2">Facturación y Garantía</h4>
+                                    <p className="text-[10px] text-gray-500 uppercase leading-relaxed font-bold">Vincula tus comprobantes de pago y garantías de servicio a tu identidad fiscal.</p>
+                                </div>
+                            </div>
+
+                            <div className="flex flex-col sm:flex-row gap-6 pt-8 items-center">
+                                <button
+                                    onClick={() => setStep(2)}
+                                    className="w-full sm:w-auto bg-primary hover:bg-red-700 text-white font-black py-5 px-12 rounded-2xl uppercase tracking-[0.2em] shadow-2xl shadow-primary/20 transition-all flex items-center justify-center gap-3 group"
+                                >
+                                    Iniciar Activación <ChevronRight className="group-hover:translate-x-2 transition-transform" />
+                                </button>
+                                <p className="text-[10px] font-black text-gray-600 uppercase tracking-widest">Toma menos de 60 segundos</p>
+                            </div>
+                        </motion.div>
+                    )}
+
+                    {step === 2 && (
+                        <motion.div
+                            key="step2"
+                            initial={{ opacity: 0, x: 20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            exit={{ opacity: 0, x: -20 }}
+                            className="space-y-10"
+                        >
+                            <div className="flex items-center gap-6">
+                                <button onClick={() => setStep(1)} className="w-12 h-12 flex items-center justify-center bg-white/5 hover:bg-white/10 rounded-2xl text-gray-400 transition-colors border border-white/5">
+                                    <History size={20} />
+                                </button>
+                                <h3 className="text-3xl font-black text-white italic uppercase tracking-tighter">Verificación de Identidad</h3>
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                <div className="space-y-3">
+                                    <label className="text-[10px] font-black uppercase tracking-[0.2em] text-primary px-1">Número de DNI / Documento</label>
+                                    <input
+                                        type="text"
+                                        placeholder="Ej: 77665544"
+                                        className="w-full bg-surface-darker/80 border border-white/10 rounded-2xl py-5 px-8 text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all shadow-inner font-bold"
+                                        value={formData.documentId}
+                                        onChange={(e) => setFormData({ ...formData, documentId: e.target.value })}
+                                    />
+                                </div>
+                                <div className="space-y-3">
+                                    <label className="text-[10px] font-black uppercase tracking-[0.2em] text-primary px-1">Teléfono de Contacto</label>
+                                    <input
+                                        type="text"
+                                        placeholder="Ej: 999 888 777"
+                                        className="w-full bg-surface-darker/80 border border-white/10 rounded-2xl py-5 px-8 text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all shadow-inner font-bold"
+                                        value={formData.phone}
+                                        onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                                    />
+                                </div>
+                                <div className="space-y-3 md:col-span-2">
+                                    <label className="text-[10px] font-black uppercase tracking-[0.2em] text-primary px-1">Dirección Física</label>
+                                    <div className="relative">
+                                        <MapPin className="absolute left-6 top-1/2 -translate-y-1/2 text-primary/50" size={20} />
+                                        <input
+                                            type="text"
+                                            placeholder="Dirección completa para facturación oficial"
+                                            className="w-full bg-surface-darker/80 border border-white/10 rounded-2xl py-5 pl-16 pr-8 text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all shadow-inner font-bold"
+                                            value={formData.address}
+                                            onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="flex justify-end pt-6 border-t border-white/5">
+                                <button
+                                    onClick={() => {
+                                        if (!formData.documentId || !formData.address) return alert("Completa los campos.");
+                                        setStep(3);
+                                    }}
+                                    className="bg-primary hover:bg-red-700 text-white font-black py-5 px-12 rounded-2xl uppercase tracking-[0.2em] shadow-xl transition-all flex items-center gap-3 active:scale-95"
+                                >
+                                    Siguiente Paso: Mi Auto <ChevronRight size={20} />
+                                </button>
+                            </div>
+                        </motion.div>
+                    )}
+
+                    {step === 3 && (
+                        <motion.div
+                            key="step3"
+                            initial={{ opacity: 0, x: 20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            exit={{ opacity: 0, x: -20 }}
+                            className="space-y-10"
+                        >
+                            <div className="flex items-center gap-6">
+                                <button onClick={() => setStep(2)} className="w-12 h-12 flex items-center justify-center bg-white/5 hover:bg-white/10 rounded-2xl text-gray-400 transition-colors border border-white/5">
+                                    <History size={20} />
+                                </button>
+                                <h3 className="text-3xl font-black text-white italic uppercase tracking-tighter">Mi Garaje Personal</h3>
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                <div className="space-y-3">
+                                    <label className="text-[10px] font-black uppercase tracking-[0.2em] text-primary px-1">Placa / Patente</label>
+                                    <input
+                                        type="text"
+                                        placeholder="Ej: ABC-123"
+                                        className="w-full bg-surface-darker/80 border border-white/10 rounded-2xl py-5 px-8 text-white focus:outline-none focus:border-primary transition-all shadow-inner font-bold"
+                                        value={formData.vehiclePlate}
+                                        onChange={(e) => setFormData({ ...formData, vehiclePlate: e.target.value })}
+                                    />
+                                </div>
+                                <div className="space-y-3">
+                                    <label className="text-[10px] font-black uppercase tracking-[0.2em] text-primary px-1">Marca</label>
+                                    <input
+                                        type="text"
+                                        placeholder="Ej: Toyota / BMW"
+                                        className="w-full bg-surface-darker/80 border border-white/10 rounded-2xl py-5 px-8 text-white focus:outline-none focus:border-primary transition-all shadow-inner font-bold"
+                                        value={formData.vehicleBrand}
+                                        onChange={(e) => setFormData({ ...formData, vehicleBrand: e.target.value })}
+                                    />
+                                </div>
+                                <div className="space-y-3">
+                                    <label className="text-[10px] font-black uppercase tracking-[0.2em] text-primary px-1">Modelo</label>
+                                    <input
+                                        type="text"
+                                        placeholder="Ej: Corolla / X5"
+                                        className="w-full bg-surface-darker/80 border border-white/10 rounded-2xl py-5 px-8 text-white focus:outline-none focus:border-primary transition-all shadow-inner font-bold"
+                                        value={formData.vehicleModel}
+                                        onChange={(e) => setFormData({ ...formData, vehicleModel: e.target.value })}
+                                    />
+                                </div>
+                                <div className="space-y-3">
+                                    <label className="text-[10px] font-black uppercase tracking-[0.2em] text-primary px-1">Año</label>
+                                    <input
+                                        type="number"
+                                        className="w-full bg-surface-darker/80 border border-white/10 rounded-2xl py-5 px-8 text-white focus:outline-none focus:border-primary transition-all shadow-inner font-bold"
+                                        value={formData.vehicleYear}
+                                        onChange={(e) => setFormData({ ...formData, vehicleYear: e.target.value })}
+                                    />
+                                </div>
+                                <div className="space-y-3 md:col-span-2">
+                                    <label className="text-[10px] font-black uppercase tracking-[0.2em] text-primary px-1">Kilometraje Aproximado</label>
+                                    <div className="relative">
+                                        <Gauge className="absolute left-6 top-1/2 -translate-y-1/2 text-primary/50" size={20} />
+                                        <input
+                                            type="number"
+                                            placeholder="Importante para el plan de mantenimiento"
+                                            className="w-full bg-surface-darker/80 border border-white/10 rounded-2xl py-5 pl-16 pr-8 text-white focus:outline-none focus:border-primary transition-all shadow-inner font-bold"
+                                            value={formData.vehicleMileage}
+                                            onChange={(e) => setFormData({ ...formData, vehicleMileage: e.target.value })}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="flex justify-end pt-6 border-t border-white/5">
+                                <button
+                                    onClick={() => {
+                                        if (!formData.vehiclePlate || !formData.vehicleBrand) return alert("Danos al menos la placa y marca.");
+                                        setStep(4);
+                                    }}
+                                    className="bg-primary hover:bg-red-700 text-white font-black py-5 px-12 rounded-2xl uppercase tracking-[0.2em] shadow-xl transition-all flex items-center gap-3 active:scale-95"
+                                >
+                                    Siguiente Paso: Mi Consulta <ChevronRight size={20} />
+                                </button>
+                            </div>
+                        </motion.div>
+                    )}
+
+                    {step === 4 && (
+                        <motion.div
+                            key="step4"
+                            initial={{ opacity: 0, x: 20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            exit={{ opacity: 0, x: -20 }}
+                            className="space-y-10"
+                        >
+                            <div className="flex items-center gap-6">
+                                <button onClick={() => setStep(3)} className="w-12 h-12 flex items-center justify-center bg-white/5 hover:bg-white/10 rounded-2xl text-gray-400 transition-colors border border-white/5">
+                                    <History size={20} />
+                                </button>
+                                <h3 className="text-3xl font-black text-white italic uppercase tracking-tighter">Plan de Servicio</h3>
+                            </div>
+
+                            <div className="space-y-6">
+                                <div className="p-8 rounded-[2rem] bg-surface-darker/50 border border-white/5">
+                                    <div className="flex items-center gap-4 mb-6">
+                                        <div className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center text-primary">
+                                            <Zap size={24} />
+                                        </div>
+                                        <div>
+                                            <h4 className="text-white font-black uppercase tracking-widest text-xs">¿Qué requiere tu unidad hoy?</h4>
+                                            <p className="text-[10px] text-gray-500 uppercase font-bold tracking-wider">Describe fallas, ruidos o el servicio preventivo que buscas.</p>
+                                        </div>
+                                    </div>
+                                    <textarea
+                                        rows="5"
+                                        placeholder="Ej: Siento una vibración en el volante al frenar y requiero cambio de aceite sintético..."
+                                        className="w-full bg-surface-darker/80 border border-white/5 rounded-3xl py-6 px-8 text-white focus:outline-none focus:border-primary transition-all shadow-inner font-medium resize-none text-sm"
+                                        value={formData.vehicleRequirement}
+                                        onChange={(e) => setFormData({ ...formData, vehicleRequirement: e.target.value })}
+                                    ></textarea>
+                                </div>
+
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div className="flex items-center gap-3 p-4 rounded-2xl bg-white/5 border border-white/5">
+                                        <div className="text-primary"><CheckCircle size={16} /></div>
+                                        <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest leading-none">Generación de Cotización Inicial</p>
+                                    </div>
+                                    <div className="flex items-center gap-3 p-4 rounded-2xl bg-white/5 border border-white/5">
+                                        <div className="text-primary"><CheckCircle size={16} /></div>
+                                        <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest leading-none">Sincronización con Taller Físico</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="flex flex-col sm:flex-row justify-between items-center gap-6 pt-6 border-t border-white/5">
+                                <div className="flex items-center gap-3 text-orange-400 bg-orange-400/5 px-4 py-2 rounded-xl border border-orange-400/10">
+                                    <Info size={14} />
+                                    <p className="text-[10px] font-black uppercase tracking-widest">Activación Final de Panel</p>
+                                </div>
+                                <button
+                                    disabled={loading || !formData.vehicleRequirement}
+                                    onClick={handleSave}
+                                    className="w-full sm:w-auto bg-white hover:bg-primary hover:text-white text-black font-black py-5 px-12 rounded-2xl uppercase tracking-[0.2em] shadow-xl transition-all flex items-center justify-center gap-3 active:scale-95 disabled:opacity-50"
+                                >
+                                    {loading ? 'Inicializando Garage...' : 'Completar Activación'}
+                                    {!loading && <CheckCircle size={20} />}
+                                </button>
+                            </div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+            </div>
+        </div>
+    );
+};
+
 const UserDashboard = () => {
     const { user } = useAuth();
     const [activeTab, setActiveTab] = useState('current'); // current, health, history
@@ -416,43 +725,52 @@ const UserDashboard = () => {
         </div>
     );
 
-    if (!data) return (
-        <div className="min-h-screen bg-[#0a0a0b] flex items-center justify-center p-6">
-            <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="max-w-2xl w-full"
-            >
-                <div className="text-center mb-12">
-                    <div className="inline-flex p-4 rounded-3xl bg-primary/10 border border-primary/20 mb-6">
-                        <Activity size={40} className="text-primary" />
-                    </div>
-                    <h2 className="text-4xl font-black text-white italic uppercase tracking-tighter mb-4">Tu Garage está esperando</h2>
-                    <p className="text-gray-400 text-lg">Actualmente no tienes un servicio en curso. Sigue estos pasos para activar tu panel premium:</p>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-                    {[
-                        { step: "01", title: "Agenda", desc: "Usa el botón de 'Agendar Cita' en el menú superior.", icon: <Calendar size={20} /> },
-                        { step: "02", title: "Check-in", desc: "Trae tu vehículo a Factoría La Caravana para la inspección inicial.", icon: <Box size={20} /> },
-                        { step: "03", title: "Activa", desc: "Una vez ingresado, verás aquí el progreso y diagnóstico en vivo.", icon: <Zap size={20} /> }
-                    ].map((item, i) => (
-                        <div key={i} className="bg-surface-dark/40 border border-white/5 p-6 rounded-2xl relative overflow-hidden group">
-                            <div className="absolute top-0 right-0 p-2 text-primary/20 font-black text-2xl group-hover:text-primary/40 transition-colors">{item.step}</div>
-                            <div className="text-primary mb-4">{item.icon}</div>
-                            <h4 className="font-bold text-white mb-2 uppercase text-xs tracking-widest">{item.title}</h4>
-                            <p className="text-[10px] text-gray-500 leading-relaxed uppercase font-medium">{item.desc}</p>
+    if (!data && !loading) {
+        return (
+            <div className="bg-[#050505] min-h-screen pt-32 pb-20 px-6">
+                <div className="max-w-7xl mx-auto space-y-12">
+                    <div className="text-center space-y-4 mb-16">
+                        <div className="inline-flex p-4 rounded-3xl bg-primary/10 border border-primary/20 mb-4">
+                            <UserPlus size={40} className="text-primary" />
                         </div>
-                    ))}
+                        <h1 className="text-4xl font-black text-white italic uppercase tracking-tighter">
+                            Bienvenido, <span className="text-primary truncate">{user?.fullName || user?.username}</span>
+                        </h1>
+                        <p className="text-gray-500 text-base max-w-2xl mx-auto font-medium">
+                            Estamos preparando tu garage digital. Completa tu registro profesional para empezar a gestionar tus vehículos y servicios.
+                        </p>
+                    </div>
+                    <ProfileActivationCenter onComplete={fetchDashboardData} />
                 </div>
+            </div>
+        );
+    }
 
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                    <a href="/#booking" className="bg-primary text-white font-black py-4 px-8 rounded-xl uppercase tracking-widest text-xs hover:bg-red-700 transition-all text-center">Agendar mi primera cita</a>
-                    <button className="bg-white/5 text-gray-400 border border-white/10 font-black py-4 px-8 rounded-xl uppercase tracking-widest text-xs hover:bg-white/10 transition-all text-center">Ver servicios sugeridos</button>
+    if (!data) return null;
+
+    // IF PROFILE IS INCOMPLETE, SHOW ACTIVATION CENTER AS REDUCED DASHBOARD
+    if (!data.profileComplete) {
+        return (
+            <div className="bg-[#050505] min-h-screen pt-12 pb-20 px-6">
+                <div className="max-w-7xl mx-auto space-y-12">
+                    {/* Persuasive Header */}
+                    <div className="text-center space-y-4 mb-8">
+                        <div className="inline-flex p-4 rounded-3xl bg-primary/10 border border-primary/20 mb-4 animate-bounce">
+                            <UserPlus size={40} className="text-primary" />
+                        </div>
+                        <h1 className="text-4xl font-black text-white italic uppercase tracking-tighter">
+                            Bienvenido a la <span className="text-primary truncate">Experiencia Premium</span>
+                        </h1>
+                        <p className="text-gray-500 text-base max-w-2xl mx-auto font-medium">
+                            Antes de agendar tu primera cita, debemos sincronizar tu cuenta con el sistema legal del taller para garantizar tus cotizaciones y garantías.
+                        </p>
+                    </div>
+
+                    <ProfileActivationCenter onComplete={fetchDashboardData} />
                 </div>
-            </motion.div>
-        </div>
-    );
+            </div>
+        );
+    }
 
     const tabs = [
         { id: 'current', label: 'Servicio Actual', icon: <Activity size={18} /> },
@@ -485,12 +803,8 @@ const UserDashboard = () => {
                             ))}
                         </div>
                         <div className="hidden md:flex items-center gap-4">
-                            <button className="p-2 text-gray-400 hover:text-white transition-colors relative">
-                                <MessageSquare size={20} />
-                                <span className="absolute top-1 right-1 w-2 h-2 bg-primary rounded-full"></span>
-                            </button>
                             <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-primary to-red-600 p-[2px]">
-                                <img src={user.avatarUrl || "https://i.pravatar.cc/100"} className="w-full h-full rounded-full object-cover border-2 border-[#0a0a0b]" alt="Profile" />
+                                <img src={user?.avatarUrl || "https://i.pravatar.cc/100"} className="w-full h-full rounded-full object-cover border-2 border-[#0a0a0b]" alt="Profile" />
                             </div>
                         </div>
                     </div>
@@ -513,7 +827,6 @@ const UserDashboard = () => {
                             <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
                             Conectado al Taller
                         </div>
-                        <div className="hidden sm:block">Autoguardado: Activo (hace 2 min)</div>
                     </div>
                     <div>Factoría La Caravana CRM v2.4.0</div>
                 </div>

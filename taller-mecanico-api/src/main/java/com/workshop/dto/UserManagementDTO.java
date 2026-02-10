@@ -20,4 +20,5 @@ public class UserManagementDTO {
     private Boolean isProfileComplete;
     private String clientAddress;
     private String clientPhone;
+    private String clientDocumentId;
 }

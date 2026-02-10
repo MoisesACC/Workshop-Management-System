@@ -1,6 +1,6 @@
 
 import {
-    LayoutDashboard, Construction, Users,
+    LayoutDashboard, Construction, Users, Shield,
     Wrench, Settings, LogOut, FileText, Plus,
     Package, Map
 } from 'lucide-react';
@@ -20,6 +20,7 @@ const Sidebar = () => {
         { icon: <LayoutDashboard size={20} />, label: "Dashboard", path: "/admin" },
         { icon: <Construction size={20} />, label: "Ordenes", path: "/admin/orders", count: 12 },
         { icon: <Users size={20} />, label: "Clientes", path: "/admin/clients" },
+        { icon: <Shield size={20} />, label: "Cuentas", path: "/admin/users" },
         { icon: <Package size={20} />, label: "Inventario", path: "/admin/inventory", alert: true },
         { icon: <Wrench size={20} />, label: "Servicios", path: "/admin/services" },
     ];

@@ -33,10 +33,14 @@ public class UserController extends BaseController<User, Long, UserService> {
     @PatchMapping("/{id}/profile")
     public ResponseEntity<User> updateProfile(@PathVariable Long id, @RequestBody ProfileUpdateRequest request) {
         try {
-            return ResponseEntity
-                    .ok(service.updateProfile(id, request.getFullName(), request.getPhone(), request.getAvatarUrl()));
+            return ResponseEntity.ok(service.updateProfile(id, request.getFullName(), request.getPhone(),
+                    request.getAvatarUrl(), request.getDocumentId(), request.getDocumentType(), request.getAddress(),
+                    request.getCity(),
+                    request.getVehiclePlate(), request.getVehicleBrand(), request.getVehicleModel(),
+                    request.getVehicleYear(), request.getVehicleMileage(), request.getVehicleRequirement()));
         } catch (Exception e) {
-            return ResponseEntity.notFound().build();
+            e.printStackTrace();
+            return ResponseEntity.status(500).build();
         }
     }
 
@@ -45,5 +49,17 @@ public class UserController extends BaseController<User, Long, UserService> {
         private String fullName;
         private String avatarUrl;
         private String phone;
+        // Workshop specific
+        private String documentId;
+        private String documentType;
+        private String address;
+        private String city;
+        // Initial Vehicle Data
+        private String vehiclePlate;
+        private String vehicleBrand;
+        private String vehicleModel;
+        private Integer vehicleYear;
+        private Integer vehicleMileage;
+        private String vehicleRequirement; // What the user needs (e.g., "Cambio de aceite", "Ruidos en motor")
     }
 }

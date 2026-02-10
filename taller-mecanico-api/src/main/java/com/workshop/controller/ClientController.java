@@ -59,4 +59,12 @@ public class ClientController {
                 .map(mapper::toClientDTO)
                 .toList());
     }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<com.workshop.dto.ClientDTO> findByUserId(@PathVariable Long userId) {
+        return service.findByUserId(userId)
+                .map(mapper::toClientDTO)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
 }

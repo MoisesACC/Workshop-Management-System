@@ -17,6 +17,8 @@ public class CustomerDashboardDTO {
     private List<MaintenanceSummary> history;
     private List<SystemHealth> healthReport;
     private QuoteSummary currentQuote;
+    private String customerName;
+    private boolean profileComplete;
 
     @Data
     @Builder

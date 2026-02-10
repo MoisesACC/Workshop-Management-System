@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-
 @RestController
 @RequestMapping("/api/customer")
 @RequiredArgsConstructor
@@ -24,8 +23,16 @@ public class CustomerController {
         @GetMapping("/{userId}/dashboard")
         public ResponseEntity<CustomerDashboardDTO> getDashboard(@PathVariable Long userId) {
                 Client client = clientRepository.findByUserId(userId)
-                                .orElseThrow(() -> new RuntimeException(
-                                                "Cliente no encontrado para el usuario: " + userId));
+                                .orElse(null);
+
+                if (client == null) {
+                        return ResponseEntity.ok(CustomerDashboardDTO.builder()
+                                        .customerName("Nuevo Usuario")
+                                        .profileComplete(false)
+                                        .healthReport(new ArrayList<>())
+                                        .history(new ArrayList<>())
+                                        .build());
+                }
 
                 // Find active work order (most recent not completed/cancelled/quote)
                 WorkOrder activeOrder = client.getWorkOrders().stream()
@@ -44,6 +51,14 @@ public class CustomerController {
                 }
 
                 CustomerDashboardDTO.CustomerDashboardDTOBuilder builder = CustomerDashboardDTO.builder();
+
+                builder.customerName(client.getFirstName() + " " + client.getLastName());
+
+                // Logic for profile complete (has address, phone, and a real document ID)
+                boolean isComplete = client.getAddress() != null &&
+                                client.getDocumentId() != null &&
+                                !client.getDocumentId().startsWith("WEB-");
+                builder.profileComplete(isComplete);
 
                 if (activeOrder != null) {
                         Vehicle v = activeOrder.getVehicle();

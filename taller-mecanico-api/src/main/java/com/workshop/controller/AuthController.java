@@ -43,22 +43,6 @@ public class AuthController {
             user.setIsActive(true);
 
             User savedUser = userService.registerUser(user);
-
-            // AUTO-CREATE CLIENT RECORD for Web Registrations
-            if (userRole == User.Role.USER) {
-                Client client = new Client();
-                String fullName = user.getFullName() != null ? user.getFullName() : user.getUsername();
-                String[] nameParts = fullName.split(" ", 2);
-                client.setFirstName(nameParts[0]);
-                client.setLastName(nameParts.length > 1 ? nameParts[1] : "Usuario Web");
-                client.setEmail(user.getEmail());
-                client.setPhone("");
-                client.setDocumentId("WEB-" + savedUser.getId());
-                client.setDocumentType(Client.DocumentType.DNI);
-                client.setUser(savedUser);
-                clientRepository.save(client);
-            }
-
             return ResponseEntity.ok(savedUser);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
