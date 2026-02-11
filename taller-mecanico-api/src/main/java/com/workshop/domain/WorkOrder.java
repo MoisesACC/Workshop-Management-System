@@ -21,11 +21,11 @@ public class WorkOrder {
     private String workOrderNumber;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = false, length = 20)
     private Status status;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = false, length = 20)
     private Priority priority;
 
     private BigDecimal totalEstimatedCost;

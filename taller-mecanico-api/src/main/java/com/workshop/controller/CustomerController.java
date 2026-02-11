@@ -51,6 +51,7 @@ public class CustomerController {
                 CustomerDashboardDTO.CustomerDashboardDTOBuilder builder = CustomerDashboardDTO.builder();
 
                 builder.customerName(client.getFirstName() + " " + client.getLastName());
+                builder.clientId(client.getId());
 
                 // Logic for profile complete (has address, phone, and a real document ID)
                 boolean isComplete = client.getAddress() != null &&
@@ -153,10 +154,37 @@ public class CustomerController {
                                 new CustomerDashboardDTO.SystemHealth("Suspensión", 95, "OPTIMAL", "shield"),
                                 new CustomerDashboardDTO.SystemHealth("Neumáticos", 100, "OPTIMAL", "circle")));
 
-                // History Mock
-                builder.history(Arrays.asList(
-                                new CustomerDashboardDTO.MaintenanceSummary("20 Ene 2024", "Cambio de Aceite Premium",
-                                                "15,200 KM", "$120.00")));
+                // FETCH ALL VEHICLES
+                List<CustomerDashboardDTO.VehicleSummary> allVehicles = new ArrayList<>();
+                if (client.getVehicles() != null) {
+                        client.getVehicles().forEach(v -> {
+                                allVehicles.add(CustomerDashboardDTO.VehicleSummary.builder()
+                                                .model(v.getBrand() + " " + v.getModel())
+                                                .year(v.getYear().toString())
+                                                .plate(v.getLicensePlate())
+                                                .vin(v.getVin())
+                                                .color(v.getColor())
+                                                .image("https://images.unsplash.com/photo-1511919884226-fd3cad34687c?auto=format&fit=crop&q=80&w=1000") // URL
+                                                                                                                                                        // hardcodeada
+                                                                                                                                                        // por
+                                                                                                                                                        // ahora
+                                                .build());
+                        });
+                }
+                builder.allVehicles(allVehicles);
+
+                // POPULATE PERSONAL INFO
+                builder.personalInfo(CustomerDashboardDTO.PersonalInfo.builder()
+                                .firstName(client.getFirstName())
+                                .lastName(client.getLastName())
+                                .email(client.getEmail())
+                                .phone(client.getPhone())
+                                .address(client.getAddress())
+                                .city(client.getCity())
+                                .documentId(client.getDocumentId())
+                                .documentType(client.getDocumentType() != null ? client.getDocumentType().name()
+                                                : "DNI")
+                                .build());
 
                 return ResponseEntity.ok(builder.build());
         }

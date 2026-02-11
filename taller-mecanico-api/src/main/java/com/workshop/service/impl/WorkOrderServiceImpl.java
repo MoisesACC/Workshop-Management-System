@@ -169,27 +169,55 @@ public class WorkOrderServiceImpl implements WorkOrderService {
             vehicle = vehicleRepository.findById(request.getVehicleId()).orElse(null);
         }
 
-        WorkOrder quote = new WorkOrder();
-        quote.setWorkOrderNumber("C-" + UUID.randomUUID().toString().substring(0, 6).toUpperCase());
-        quote.setClient(client);
+        // Search for an existing quote to reuse it if the user wants "only one quote"
+        // or just to be more efficient.
+        WorkOrder quote = workOrderRepository.findTopByClientIdAndStatusOrderByCreatedAtDesc(
+                request.getClientId(), WorkOrder.Status.QUOTE).orElse(new WorkOrder());
+
+        if (quote.getId() == null) {
+            quote.setWorkOrderNumber("C-" + UUID.randomUUID().toString().substring(0, 6).toUpperCase());
+            quote.setClient(client);
+            quote.setStatus(request.getStatus() != null ? WorkOrder.Status.valueOf(request.getStatus().toUpperCase())
+                    : WorkOrder.Status.QUOTE);
+            quote.setPriority(WorkOrder.Priority.LOW);
+        } else {
+            // If reusing, clear old tasks and potentially update status
+            if (request.getStatus() != null) {
+                quote.setStatus(WorkOrder.Status.valueOf(request.getStatus().toUpperCase()));
+            }
+            if (quote.getWorkOrderTasks() != null) {
+                workOrderTaskRepository.deleteAll(quote.getWorkOrderTasks());
+                quote.getWorkOrderTasks().clear();
+            }
+        }
+
         quote.setVehicle(vehicle);
-        quote.setStatus(WorkOrder.Status.QUOTE);
-        quote.setPriority(WorkOrder.Priority.LOW);
         quote.setNotes(request.getNotes());
         quote.setTotalActualCost(BigDecimal.ZERO);
         quote.setTotalEstimatedCost(BigDecimal.ZERO);
+
+        // Safety: Assign a default user if none is assigned (important for DB
+        // constraints)
+        if (quote.getAssignedUser() == null) {
+            userRepository.findAll().stream().findFirst().ifPresent(quote::setAssignedUser);
+        }
 
         WorkOrder savedQuote = workOrderRepository.save(quote);
 
         BigDecimal total = BigDecimal.ZERO;
         if (request.getItems() != null) {
             for (com.workshop.dto.QuickQuoteRequest.QuoteLineItem item : request.getItems()) {
+                if (item.getPrice() == null || item.getQuantity() == null)
+                    continue;
+
                 WorkOrderTask task = new WorkOrderTask();
                 task.setWorkOrder(savedQuote);
                 task.setQuantity(item.getQuantity());
                 task.setActualPrice(item.getPrice());
                 task.setNotes(item.getDescription());
                 task.setStatus(WorkOrderTask.Status.PENDING);
+
+                // Note: service is left null for ad-hoc quote items
                 workOrderTaskRepository.save(task);
 
                 total = total.add(item.getPrice().multiply(BigDecimal.valueOf(item.getQuantity())));

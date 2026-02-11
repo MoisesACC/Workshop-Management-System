@@ -24,7 +24,13 @@ const ProtectedRoute = ({ children, role }) => {
     return <Navigate to="/" replace />;
   }
 
-  if (role && user.role !== role) {
+  // Permissive check for dashboard access
+  if (!role || role === 'USER') {
+    return children;
+  }
+
+  // Case-insensitive check for Admin/other special roles
+  if (user.role?.toUpperCase() !== role.toUpperCase()) {
     return <Navigate to="/" replace />;
   }
 

@@ -3,7 +3,7 @@ import {
     Activity, Box, Calendar, CheckCircle, ChevronRight,
     ClipboardList, Clock, CreditCard, Droplets, Gauge,
     History, MapPin, MessageSquare, ShieldCheck,
-    Zap, AlertTriangle, Search, Info, UserPlus, FileText
+    Zap, AlertTriangle, Search, Info, UserPlus, FileText, Plus, Settings, X
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
@@ -69,9 +69,9 @@ const CurrentServiceView = ({ data }) => {
                     <div>
                         <p className="text-white/70 text-xs font-bold uppercase tracking-widest mb-1">Entrega Estimada</p>
                         <div className="flex items-baseline gap-2">
-                            <span className="text-5xl font-black text-white">{activeOrder.estimatedDelivery.split(',')[0]}</span>
+                            <span className="text-5xl font-black text-white">{(activeOrder?.estimatedDelivery || 'Pendiente').split(',')[0]}</span>
                         </div>
-                        <p className="text-white font-bold mt-1 opacity-90">{activeOrder.estimatedDelivery.split(',')[1] || ''}</p>
+                        <p className="text-white font-bold mt-1 opacity-90">{(activeOrder?.estimatedDelivery || '').split(',')[1] || ''}</p>
                     </div>
                     <button className="w-full bg-white text-primary font-black py-4 rounded-xl uppercase tracking-widest text-xs hover:bg-gray-100 transition-colors shadow-2xl">
                         Aprobar Reparaciones Adicionales <ChevronRight className="inline ml-1" size={16} />
@@ -142,7 +142,7 @@ const CurrentServiceView = ({ data }) => {
                             Live Timeline
                         </h3>
                         <div className="space-y-8">
-                            {activeOrder.timeline.map((event, i) => (
+                            {(activeOrder?.timeline || []).map((event, i) => (
                                 <div key={i} className="relative pl-8 border-l border-white/10 pb-8 last:pb-0">
                                     <div className={`absolute left-[-5px] top-0 w-[10px] h-[10px] rounded-full ${event.completed ? 'bg-primary' : 'bg-gray-800'}`}></div>
                                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-2">
@@ -176,13 +176,13 @@ const CurrentServiceView = ({ data }) => {
                             <span className="text-[10px] font-bold text-green-500 bg-green-500/10 px-2 py-0.5 rounded uppercase tracking-widest">Estimado</span>
                         </div>
                         <div className="space-y-4">
-                            {data.currentQuote.items.map((item, i) => (
+                            {(data?.currentQuote?.items || []).map((item, i) => (
                                 <div key={i} className="flex justify-between text-xs py-2 border-b border-white/5 last:border-0">
                                     <div className="flex gap-2 items-center">
                                         {item.isPart ? <Box size={14} className="text-gray-500" /> : <Zap size={14} className="text-primary" />}
                                         <span className="text-gray-300">{item.description}</span>
                                     </div>
-                                    <span className="font-bold text-white">${item.price.toFixed(2)}</span>
+                                    <span className="font-bold text-white">${(item?.price || 0).toFixed(2)}</span>
                                 </div>
                             ))}
                         </div>
@@ -193,7 +193,7 @@ const CurrentServiceView = ({ data }) => {
                                     <p className="text-gray-600 text-[10px]">Incl. impuestos y descuentos</p>
                                 </div>
                                 <div className="text-right w-full">
-                                    <p className="text-3xl font-black text-white italic">${data.currentQuote.total.toFixed(2)}</p>
+                                    <p className="text-3xl font-black text-white italic">${(data?.currentQuote?.total || 0).toFixed(2)}</p>
                                 </div>
                             </div>
                             <div className="mt-6 flex flex-col gap-3">
@@ -251,7 +251,7 @@ const HealthView = ({ data }) => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {data.healthReport.map((system, i) => (
+                {(data?.healthReport || []).map((system, i) => (
                     <motion.div
                         key={i}
                         whileHover={{ y: -5 }}
@@ -349,7 +349,7 @@ const HistoryView = ({ data }) => {
                 <div className="absolute left-1/2 top-0 bottom-0 w-px bg-white/10 -translate-x-1/2 hidden md:block"></div>
 
                 <div className="space-y-20">
-                    {data.history.map((entry, i) => (
+                    {(data?.history || []).map((entry, i) => (
                         <div key={i} className={`relative flex flex-col items-center md:flex-row gap-8 ${i % 2 === 0 ? 'md:flex-row-reverse' : ''}`}>
                             {/* Point on line */}
                             <div className="absolute left-1/2 top-0 w-4 h-4 bg-primary rounded-full -translate-x-1/2 shadow-[0_0_15px_#d80327] hidden md:block"></div>
@@ -378,6 +378,297 @@ const HistoryView = ({ data }) => {
                         </div>
                     ))}
                 </div>
+            </div>
+        </motion.div>
+    );
+};
+
+const VehiclesView = ({ data, onUpdate }) => {
+    const [isAdding, setIsAdding] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [newVehicle, setNewVehicle] = useState({
+        licensePlate: '',
+        vin: '',
+        brand: '',
+        model: '',
+        year: new Date().getFullYear(),
+        color: '',
+        engineType: 'GASOLINE',
+        mileage: 0
+    });
+
+    const handleAdd = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        try {
+            await api.post('/vehicles', {
+                ...newVehicle,
+                clientId: data.clientId
+            });
+            setIsAdding(false);
+            setNewVehicle({
+                licensePlate: '',
+                vin: '',
+                brand: '',
+                model: '',
+                year: new Date().getFullYear(),
+                color: '',
+                engineType: 'GASOLINE',
+                mileage: 0
+            });
+            onUpdate();
+        } catch (err) {
+            console.error(err);
+            alert("Error al registrar vehículo");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return (
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="space-y-8"
+        >
+            <div className="flex justify-between items-center">
+                <h2 className="text-3xl font-black text-white italic uppercase tracking-tighter">Mi Garaje</h2>
+                <button
+                    onClick={() => setIsAdding(!isAdding)}
+                    className="bg-primary hover:bg-red-700 text-white font-bold py-2 px-6 rounded-xl uppercase tracking-widest text-xs transition-all shadow-lg shadow-primary/20 flex items-center gap-2"
+                >
+                    {isAdding ? <X size={16} /> : <Plus size={16} />} {isAdding ? 'Cancelar' : 'Registrar Nuevo Vehículo'}
+                </button>
+            </div>
+
+            <AnimatePresence>
+                {isAdding && (
+                    <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        className="overflow-hidden"
+                    >
+                        <form onSubmit={handleAdd} className="bg-surface-dark/60 border border-primary/20 p-8 rounded-3xl grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                            <div className="space-y-2">
+                                <label className="text-[9px] font-black uppercase tracking-widest text-primary">VIN (Nro. Serie)</label>
+                                <input
+                                    required
+                                    placeholder="17 caracteres"
+                                    className="w-full bg-black/40 border border-white/5 rounded-xl py-3 px-4 text-white focus:border-primary transition-all text-sm font-bold"
+                                    value={newVehicle.vin}
+                                    onChange={(e) => setNewVehicle({ ...newVehicle, vin: e.target.value.toUpperCase() })}
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-[9px] font-black uppercase tracking-widest text-primary">Km Actual</label>
+                                <input
+                                    type="number"
+                                    required
+                                    className="w-full bg-black/40 border border-white/5 rounded-xl py-3 px-4 text-white focus:border-primary transition-all text-sm font-bold"
+                                    value={newVehicle.mileage}
+                                    onChange={(e) => setNewVehicle({ ...newVehicle, mileage: parseInt(e.target.value) })}
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-[9px] font-black uppercase tracking-widest text-primary">Placa</label>
+                                <input
+                                    required
+                                    className="w-full bg-black/40 border border-white/5 rounded-xl py-3 px-4 text-white focus:border-primary transition-all text-sm font-bold"
+                                    value={newVehicle.licensePlate}
+                                    onChange={(e) => setNewVehicle({ ...newVehicle, licensePlate: e.target.value.toUpperCase() })}
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-[9px] font-black uppercase tracking-widest text-primary">Marca</label>
+                                <input
+                                    required
+                                    className="w-full bg-black/40 border border-white/5 rounded-xl py-3 px-4 text-white focus:border-primary transition-all text-sm font-bold"
+                                    value={newVehicle.brand}
+                                    onChange={(e) => setNewVehicle({ ...newVehicle, brand: e.target.value })}
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-[9px] font-black uppercase tracking-widest text-primary">Modelo</label>
+                                <input
+                                    required
+                                    className="w-full bg-black/40 border border-white/5 rounded-xl py-3 px-4 text-white focus:border-primary transition-all text-sm font-bold"
+                                    value={newVehicle.model}
+                                    onChange={(e) => setNewVehicle({ ...newVehicle, model: e.target.value })}
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-[9px] font-black uppercase tracking-widest text-primary">Año</label>
+                                <input
+                                    type="number"
+                                    className="w-full bg-black/40 border border-white/5 rounded-xl py-3 px-4 text-white focus:border-primary transition-all text-sm font-bold"
+                                    value={newVehicle.year}
+                                    onChange={(e) => setNewVehicle({ ...newVehicle, year: parseInt(e.target.value) })}
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-[9px] font-black uppercase tracking-widest text-primary">Color</label>
+                                <input
+                                    className="w-full bg-black/40 border border-white/5 rounded-xl py-3 px-4 text-white focus:border-primary transition-all text-sm font-bold"
+                                    value={newVehicle.color}
+                                    onChange={(e) => setNewVehicle({ ...newVehicle, color: e.target.value })}
+                                />
+                            </div>
+                            <div className="flex items-end">
+                                <button
+                                    type="submit"
+                                    disabled={loading}
+                                    className="w-full bg-white text-black font-black py-4 rounded-xl uppercase tracking-widest text-[10px] hover:bg-primary hover:text-white transition-all disabled:opacity-50 shadow-2xl shadow-black/40"
+                                >
+                                    {loading ? 'Guardando...' : 'Confirmar Registro'}
+                                </button>
+                            </div>
+                        </form>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {(data?.allVehicles || []).map((v, i) => (
+                    <div key={i} className="bg-surface-dark/40 border border-white/5 rounded-3xl overflow-hidden group hover:border-primary/30 transition-all">
+                        <div className="h-48 relative overflow-hidden">
+                            <img src={v.image || "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&q=80&w=800"} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt={v.model} />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                            <div className="absolute bottom-4 left-6">
+                                <span className="px-2 py-0.5 bg-primary text-[8px] font-black rounded uppercase tracking-widest">{v.plate}</span>
+                                <h4 className="text-xl font-black text-white italic uppercase tracking-tighter mt-1">{v.model}</h4>
+                            </div>
+                        </div>
+                        <div className="p-6 space-y-4">
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <p className="text-[9px] font-bold text-gray-500 uppercase tracking-widest">Año</p>
+                                    <p className="text-sm font-bold text-white">{v.year}</p>
+                                </div>
+                                <div>
+                                    <p className="text-[9px] font-bold text-gray-500 uppercase tracking-widest">Color</p>
+                                    <p className="text-sm font-bold text-white">{v.color}</p>
+                                </div>
+                            </div>
+                            <button className="w-full bg-white/5 hover:bg-white/10 text-white text-[10px] font-black py-2 rounded-lg uppercase tracking-widest transition-all">Ver Hoja Técnica</button>
+                        </div>
+                    </div>
+                ))}
+                {(!data?.allVehicles || data.allVehicles.length === 0) && (
+                    <div className="col-span-full py-20 text-center bg-white/5 rounded-[2.5rem] border border-dashed border-white/10">
+                        <Box className="mx-auto text-gray-600 mb-4" size={48} />
+                        <h3 className="text-xl font-bold text-white uppercase italic tracking-tighter">Garaje Vacío</h3>
+                        <p className="text-gray-500 text-[10px] font-bold uppercase tracking-widest mt-2">Registra tu primer vehículo para empezar el seguimiento</p>
+                    </div>
+                )}
+            </div>
+        </motion.div>
+    );
+};
+
+const SettingsView = ({ data, onUpdate }) => {
+    const { user, updateUserData } = useAuth();
+    const [loading, setLoading] = useState(false);
+    const [formData, setFormData] = useState({
+        fullName: `${data?.personalInfo?.firstName || ''} ${data?.personalInfo?.lastName || ''}`.trim() || user?.fullName || '',
+        phone: data?.personalInfo?.phone || user?.phone || '',
+        address: data?.personalInfo?.address || '',
+        city: data?.personalInfo?.city || '',
+        documentId: data?.personalInfo?.documentId || '',
+        documentType: data?.personalInfo?.documentType || 'DNI'
+    });
+
+    const handleSave = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        try {
+            const res = await api.patch(`/users/${user.id}/profile`, formData);
+            updateUserData(res.data);
+            onUpdate();
+            alert("Perfil actualizado correctamente");
+        } catch (err) {
+            console.error(err);
+            alert("Error al actualizar perfil");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return (
+        <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 20 }}
+            className="max-w-4xl mx-auto bg-surface-dark/40 border border-white/5 p-12 rounded-[2.5rem]"
+        >
+            <div className="space-y-12">
+                <div className="flex items-center gap-6">
+                    <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center text-primary">
+                        <Settings size={32} />
+                    </div>
+                    <div>
+                        <h2 className="text-3xl font-black text-white italic uppercase tracking-tighter">Ajustes de Perfil</h2>
+                        <p className="text-xs text-gray-500 font-bold uppercase tracking-widest">Gestiona tu identidad y datos de facturación</p>
+                    </div>
+                </div>
+
+                <form onSubmit={handleSave} className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div className="space-y-3">
+                        <label className="text-[10px] font-black uppercase tracking-widest text-primary px-1">Nombre Completo</label>
+                        <input
+                            type="text"
+                            className="w-full bg-black/40 border border-white/5 rounded-2xl py-4 px-6 text-white focus:outline-none focus:border-primary transition-all font-bold"
+                            value={formData.fullName}
+                            onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
+                        />
+                    </div>
+                    <div className="space-y-3">
+                        <label className="text-[10px] font-black uppercase tracking-widest text-primary px-1">Teléfono</label>
+                        <input
+                            type="text"
+                            className="w-full bg-black/40 border border-white/5 rounded-2xl py-4 px-6 text-white focus:outline-none focus:border-primary transition-all font-bold"
+                            value={formData.phone}
+                            onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                        />
+                    </div>
+                    <div className="space-y-3">
+                        <label className="text-[10px] font-black uppercase tracking-widest text-primary px-1">ID Fiscal (DNI/RUC)</label>
+                        <input
+                            type="text"
+                            className="w-full bg-black/40 border border-white/5 rounded-2xl py-4 px-6 text-white focus:outline-none focus:border-primary transition-all font-bold"
+                            value={formData.documentId}
+                            onChange={(e) => setFormData({ ...formData, documentId: e.target.value })}
+                        />
+                    </div>
+                    <div className="space-y-3">
+                        <label className="text-[10px] font-black uppercase tracking-widest text-primary px-1">Ciudad</label>
+                        <input
+                            type="text"
+                            className="w-full bg-black/40 border border-white/5 rounded-2xl py-4 px-6 text-white focus:outline-none focus:border-primary transition-all font-bold"
+                            value={formData.city}
+                            onChange={(e) => setFormData({ ...formData, city: e.target.value })}
+                        />
+                    </div>
+                    <div className="md:col-span-2 space-y-3">
+                        <label className="text-[10px] font-black uppercase tracking-widest text-primary px-1">Dirección de Envío / Facturación</label>
+                        <input
+                            type="text"
+                            className="w-full bg-black/40 border border-white/5 rounded-2xl py-4 px-6 text-white focus:outline-none focus:border-primary transition-all font-bold"
+                            value={formData.address}
+                            onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                        />
+                    </div>
+                    <div className="md:col-span-2 pt-6">
+                        <button
+                            type="submit"
+                            disabled={loading}
+                            className="w-full bg-white text-black hover:bg-primary hover:text-white font-black py-4 rounded-2xl uppercase tracking-[0.2em] transition-all shadow-xl disabled:opacity-50"
+                        >
+                            {loading ? 'Guardando...' : 'Actualizar mis Datos Oficiales'}
+                        </button>
+                    </div>
+                </form>
             </div>
         </motion.div>
     );
@@ -562,7 +853,7 @@ const ProfileActivationCenter = ({ onComplete }) => {
                                         placeholder="Ej: ABC-123"
                                         className="w-full bg-surface-darker/80 border border-white/10 rounded-2xl py-5 px-8 text-white focus:outline-none focus:border-primary transition-all shadow-inner font-bold"
                                         value={formData.vehiclePlate}
-                                        onChange={(e) => setFormData({ ...formData, vehiclePlate: e.target.value })}
+                                        onChange={(e) => setFormData({ ...formData, vehiclePlate: e.target.value.toUpperCase() })}
                                     />
                                 </div>
                                 <div className="space-y-3">
@@ -734,7 +1025,7 @@ const UserDashboard = () => {
                             <UserPlus size={40} className="text-primary" />
                         </div>
                         <h1 className="text-4xl font-black text-white italic uppercase tracking-tighter">
-                            Bienvenido, <span className="text-primary truncate">{user?.fullName || user?.username}</span>
+                            Bienvenido, <span className="text-primary truncate">{user?.fullName || user?.username || user?.email || 'Usuario'}</span>
                         </h1>
                         <p className="text-gray-500 text-base max-w-2xl mx-auto font-medium">
                             Estamos preparando tu garage digital. Completa tu registro profesional para empezar a gestionar tus vehículos y servicios.
@@ -774,8 +1065,10 @@ const UserDashboard = () => {
 
     const tabs = [
         { id: 'current', label: 'Servicio Actual', icon: <Activity size={18} /> },
+        { id: 'vehicles', label: 'Mi Garaje', icon: <Box size={18} /> },
         { id: 'health', label: 'Salud del Auto', icon: <ShieldCheck size={18} /> },
-        { id: 'history', label: 'Historial Clínico', icon: <History size={18} /> }
+        { id: 'history', label: 'Historial Clínico', icon: <History size={18} /> },
+        { id: 'settings', label: 'Configuración', icon: <Settings size={18} /> }
     ];
 
     return (
@@ -814,8 +1107,10 @@ const UserDashboard = () => {
             <main className="max-w-7xl mx-auto px-6 pt-40 pb-20">
                 <AnimatePresence mode="wait">
                     {activeTab === 'current' && <CurrentServiceView data={data} key="current" />}
+                    {activeTab === 'vehicles' && <VehiclesView data={data} key="vehicles" onUpdate={fetchDashboardData} />}
                     {activeTab === 'health' && <HealthView data={data} key="health" />}
                     {activeTab === 'history' && <HistoryView data={data} key="history" />}
+                    {activeTab === 'settings' && <SettingsView data={data} key="settings" onUpdate={fetchDashboardData} />}
                 </AnimatePresence>
             </main>
 

@@ -5,6 +5,7 @@ C:\Users\PC\Downloads\Proyectos-Fullstack\Proyecto-Taller\taller-mecanico-api\sr
 C:\Users\PC\Downloads\Proyectos-Fullstack\Proyecto-Taller\taller-mecanico-api\src\main\java\com\workshop\controller\AuthController.java
 C:\Users\PC\Downloads\Proyectos-Fullstack\Proyecto-Taller\taller-mecanico-api\src\main\java\com\workshop\controller\CatalogController.java
 C:\Users\PC\Downloads\Proyectos-Fullstack\Proyecto-Taller\taller-mecanico-api\src\main\java\com\workshop\controller\ClientController.java
+C:\Users\PC\Downloads\Proyectos-Fullstack\Proyecto-Taller\taller-mecanico-api\src\main\java\com\workshop\controller\CustomerController.java
 C:\Users\PC\Downloads\Proyectos-Fullstack\Proyecto-Taller\taller-mecanico-api\src\main\java\com\workshop\controller\DashboardController.java
 C:\Users\PC\Downloads\Proyectos-Fullstack\Proyecto-Taller\taller-mecanico-api\src\main\java\com\workshop\controller\InvoiceController.java
 C:\Users\PC\Downloads\Proyectos-Fullstack\Proyecto-Taller\taller-mecanico-api\src\main\java\com\workshop\controller\PartController.java
@@ -31,8 +32,11 @@ C:\Users\PC\Downloads\Proyectos-Fullstack\Proyecto-Taller\taller-mecanico-api\sr
 C:\Users\PC\Downloads\Proyectos-Fullstack\Proyecto-Taller\taller-mecanico-api\src\main\java\com\workshop\dto\CreateServiceRequest.java
 C:\Users\PC\Downloads\Proyectos-Fullstack\Proyecto-Taller\taller-mecanico-api\src\main\java\com\workshop\dto\CreateVehicleRequest.java
 C:\Users\PC\Downloads\Proyectos-Fullstack\Proyecto-Taller\taller-mecanico-api\src\main\java\com\workshop\dto\CreateWorkOrderRequest.java
+C:\Users\PC\Downloads\Proyectos-Fullstack\Proyecto-Taller\taller-mecanico-api\src\main\java\com\workshop\dto\CustomerDashboardDTO.java
 C:\Users\PC\Downloads\Proyectos-Fullstack\Proyecto-Taller\taller-mecanico-api\src\main\java\com\workshop\dto\PartDTO.java
+C:\Users\PC\Downloads\Proyectos-Fullstack\Proyecto-Taller\taller-mecanico-api\src\main\java\com\workshop\dto\QuickQuoteRequest.java
 C:\Users\PC\Downloads\Proyectos-Fullstack\Proyecto-Taller\taller-mecanico-api\src\main\java\com\workshop\dto\ServiceDTO.java
+C:\Users\PC\Downloads\Proyectos-Fullstack\Proyecto-Taller\taller-mecanico-api\src\main\java\com\workshop\dto\UserManagementDTO.java
 C:\Users\PC\Downloads\Proyectos-Fullstack\Proyecto-Taller\taller-mecanico-api\src\main\java\com\workshop\dto\VehicleDTO.java
 C:\Users\PC\Downloads\Proyectos-Fullstack\Proyecto-Taller\taller-mecanico-api\src\main\java\com\workshop\dto\WorkOrderDTO.java
 C:\Users\PC\Downloads\Proyectos-Fullstack\Proyecto-Taller\taller-mecanico-api\src\main\java\com\workshop\dto\WorkOrderTaskDTO.java

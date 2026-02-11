@@ -42,6 +42,9 @@ public class VehicleController {
                     .orElseThrow(() -> new ResourceNotFoundException("Client", "id", request.getClientId()));
             entity.setClient(client);
         }
+        if (entity.getVin() == null || entity.getVin().trim().isEmpty()) {
+            entity.setVin("PENDIENTE-" + entity.getLicensePlate());
+        }
         Vehicle saved = service.save(entity);
         return ResponseEntity.ok(mapper.toVehicleDTO(saved));
     }

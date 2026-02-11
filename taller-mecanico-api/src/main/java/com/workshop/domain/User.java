@@ -44,9 +44,11 @@ public class User {
     private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "user")
+    @com.fasterxml.jackson.annotation.JsonIgnore
     private List<Client> clients;
 
     @OneToMany(mappedBy = "assignedUser")
+    @com.fasterxml.jackson.annotation.JsonIgnore
     private List<WorkOrder> workOrders;
 
     public enum Role {

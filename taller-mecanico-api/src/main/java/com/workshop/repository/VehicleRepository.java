@@ -8,5 +8,7 @@ import org.springframework.stereotype.Repository;
 public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
     java.util.Optional<Vehicle> findByLicensePlate(String licensePlate);
 
+    java.util.Optional<Vehicle> findByVin(String vin);
+
     java.util.List<Vehicle> findByClientId(Long clientId);
 }

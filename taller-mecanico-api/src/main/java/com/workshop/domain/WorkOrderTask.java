@@ -22,7 +22,7 @@ public class WorkOrderTask {
     private BigDecimal actualPrice;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = false, length = 20)
     private Status status;
 
     private LocalDateTime completedAt;

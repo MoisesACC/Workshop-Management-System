@@ -10,6 +10,7 @@ public class QuickQuoteRequest {
     private Long vehicleId;
     private List<QuoteLineItem> items;
     private String notes;
+    private String status;
 
     @Data
     public static class QuoteLineItem {

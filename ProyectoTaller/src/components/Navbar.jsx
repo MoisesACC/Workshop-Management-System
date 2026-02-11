@@ -20,11 +20,11 @@ const Navbar = () => {
                     {user ? (
                         <>
                             <NavLink
-                                to={isAdmin ? "/admin" : "/dashboard"}
+                                to={user.role?.toUpperCase() === 'ADMIN' ? "/admin" : "/dashboard"}
                                 className="text-white hover:text-primary font-medium rounded-lg text-sm px-4 py-2 text-center transition-colors flex items-center gap-2 border border-white/20 hover:border-primary/50"
                             >
                                 <User size={18} />
-                                {user.username}
+                                {user.username || user.fullName || user.email || 'Mi Perfil'}
                             </NavLink>
                             <button onClick={logout} className="text-gray-400 hover:text-white text-sm">Salir</button>
                         </>

@@ -12,13 +12,31 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CustomerDashboardDTO {
-    private VehicleSummary vehicle;
+    private VehicleSummary vehicle; // Current active vehicle
+    private List<VehicleSummary> allVehicles;
     private ActiveWorkOrder activeOrder;
     private List<MaintenanceSummary> history;
     private List<SystemHealth> healthReport;
     private QuoteSummary currentQuote;
     private String customerName;
+    private Long clientId;
     private boolean profileComplete;
+    private PersonalInfo personalInfo;
+
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class PersonalInfo {
+        private String firstName;
+        private String lastName;
+        private String email;
+        private String phone;
+        private String address;
+        private String documentId;
+        private String documentType;
+        private String city;
+    }
 
     @Data
     @Builder
