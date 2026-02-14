@@ -10,6 +10,8 @@ import Orders from './pages/Orders';
 import NewOrder from './pages/NewOrder';
 import Clients from './pages/Clients';
 import Services from './pages/Services';
+import PublicServices from './pages/PublicServices';
+import PublicGallery from './pages/PublicGallery';
 import Finances from './pages/Finances';
 import Settings from './pages/Settings';
 import UsersPage from './pages/Users';
@@ -52,6 +54,8 @@ function App() {
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
+          <Route path="/servicios" element={<PublicServices />} />
+          <Route path="/galeria" element={<PublicGallery />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/dashboard" element={

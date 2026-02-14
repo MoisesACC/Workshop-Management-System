@@ -1,4 +1,5 @@
 
+import { NavLink } from 'react-router-dom';
 import { Hammer, Facebook, Instagram, Mail, Phone, MapPin, Clock } from 'lucide-react';
 
 const Footer = () => {
@@ -8,10 +9,9 @@ const Footer = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
                     {/* Column 1 */}
                     <div className="space-y-6">
-                        <a className="flex items-center gap-2" href="#">
-                            <span className="text-primary text-3xl"><Hammer size={32} /></span>
-                            <span className="text-xl font-bold text-white tracking-wide">FACTORÍA <span className="text-primary">LA CARAVANA</span></span>
-                        </a>
+                        <NavLink className="flex items-center gap-2" to="/">
+                            <img src="/src/assets/img/logo.png" alt="Factoría La Caravana" className="h-12 w-auto" />
+                        </NavLink>
                         <p className="text-gray-400 text-sm leading-relaxed">
                             Tu taller de confianza especializado en vehículos de gama alta. Calidad, precisión y servicio premium en cada detalle.
                         </p>
@@ -26,10 +26,11 @@ const Footer = () => {
                     <div>
                         <h3 className="text-white font-bold mb-6 text-lg">Enlaces Rápidos</h3>
                         <ul className="space-y-3 text-sm text-gray-400">
-                            <li><a href="#" className="hover:text-primary transition-colors">Inicio</a></li>
-                            <li><a href="#services" className="hover:text-primary transition-colors">Nuestros Servicios</a></li>
+                            <li><NavLink to="/" className="hover:text-primary transition-colors">Inicio</NavLink></li>
+                            <li><NavLink to="/servicios" className="hover:text-primary transition-colors">Nuestros Servicios</NavLink></li>
+                            <li><NavLink to="/galeria" className="hover:text-primary transition-colors">Galería de Trabajos</NavLink></li>
                             <li><a href="#booking" className="hover:text-primary transition-colors">Agendar Cita</a></li>
-                            <li><a href="/dashboard" className="hover:text-primary transition-colors">Área de Clientes</a></li>
+                            <li><NavLink to="/dashboard" className="hover:text-primary transition-colors">Área de Clientes</NavLink></li>
                             <li><a href="#" className="hover:text-primary transition-colors">Términos y Condiciones</a></li>
                         </ul>
                     </div>
