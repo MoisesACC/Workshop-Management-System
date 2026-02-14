@@ -290,8 +290,7 @@ const Home = () => {
                             <img
                                 src={brand.logo}
                                 alt={brand.name}
-                                className="max-h-16 w-auto object-contain brightness-100 contrast-125"
-                                loading="lazy"
+                                className="max-h-20 w-auto object-contain"
                             />
                         </div>
                     ))}
@@ -304,7 +303,7 @@ const Home = () => {
                             <img
                                 src={brand.logo}
                                 alt={brand.name}
-                                className="max-h-16 w-auto object-contain brightness-100 contrast-125"
+                                className="object-contain"
                                 loading="lazy"
                             />
                         </div>
