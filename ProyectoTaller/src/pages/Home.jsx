@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { NavLink } from 'react-router-dom';
 import {
     Calendar, ArrowDown, MapPin,
@@ -82,7 +82,28 @@ const Home = () => {
     const [sliderPos, setSliderPos] = useState(50);
     const [timeLeft, setTimeLeft] = useState({ days: '00', hours: '00', minutes: '00', seconds: '00' });
     const [activeHeroImg, setActiveHeroImg] = useState(0);
+    const [activeTestimonial, setActiveTestimonial] = useState(0);
+    const testimonialsRef = useRef(null);
     const heroImages = ["/assets/img/slider.webp", "/assets/img/slider2.webp"];
+
+    // Automatic Testimonials Carousel Logic
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setActiveTestimonial((prev) => (prev + 1) % testimonials.length);
+        }, 5000);
+        return () => clearInterval(interval);
+    }, []);
+
+    useEffect(() => {
+        if (testimonialsRef.current && window.innerWidth < 768) {
+            const container = testimonialsRef.current;
+            const scrollWidth = container.scrollWidth / testimonials.length;
+            container.scrollTo({
+                left: scrollWidth * activeTestimonial,
+                behavior: 'smooth'
+            });
+        }
+    }, [activeTestimonial]);
 
     const handleSliderChange = (e) => {
         setSliderPos(e.target.value);
@@ -217,7 +238,7 @@ const Home = () => {
                         <div className="mt-8 flex flex-col items-center justify-center">
                             <h2 className="text-3xl md:text-5xl lg:text-5xl font-black italic uppercase tracking-tighter leading-none">
                                 <span className="text-white">FACTORÍA</span>
-                                 <span className="text-primary whitespace-nowrap">LA CARAVANA</span>
+                                <span className="text-primary whitespace-nowrap">LA CARAVANA</span>
                             </h2>
                             <p className="text-yellow-500 font-black tracking-[0.3em] uppercase text-[10px] text-center md:text-xs mt-3">
                                 SERVICIOS DE PLANCHADO Y PINTURA AUTOMOTRIZ
@@ -475,32 +496,54 @@ const Home = () => {
                         <div className="w-24 h-1.5 bg-primary mx-auto rounded-full"></div>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        {testimonials.map((t, i) => (
-                            <div key={i} className="bg-white p-8 rounded-[2rem] shadow-2xl space-y-6 relative group overflow-hidden border border-gray-100 italic">
-                                <div className="flex items-center justify-between">
-                                    <div className="flex items-center gap-4">
-                                        <img src={t.img} alt={t.name} className="w-12 h-12 rounded-full object-cover border-2 border-gray-100" />
-                                        <div>
-                                            <h4 className="font-bold text-gray-900 text-sm tracking-tight">{t.name}</h4>
-                                            <p className="text-gray-500 text-xs font-semibold">{t.handle}</p>
+                    <div className="relative group">
+                        {/* Mobile Carousel / Desktop Grid */}
+                        <div
+                            ref={testimonialsRef}
+                            className="flex overflow-x-auto md:grid md:grid-cols-3 gap-6 md:gap-8 pb-12 md:pb-0 snap-x snap-mandatory no-scrollbar scroll-smooth"
+                        >
+                            {testimonials.map((t, i) => (
+                                <div
+                                    key={i}
+                                    className="min-w-[85vw] md:min-w-0 snap-center bg-white p-8 rounded-[2rem] shadow-2xl space-y-6 relative group/card overflow-hidden border border-gray-100 italic flex flex-col justify-between"
+                                >
+                                    <div className="relative z-10 space-y-6">
+                                        <div className="flex items-center justify-between">
+                                            <div className="flex items-center gap-4">
+                                                <img src={t.img} alt={t.name} className="w-12 h-12 rounded-full object-cover border-2 border-gray-100" />
+                                                <div>
+                                                    <h4 className="font-bold text-gray-900 text-sm tracking-tight">{t.name}</h4>
+                                                    <p className="text-gray-500 text-xs font-semibold">{t.handle}</p>
+                                                </div>
+                                            </div>
+                                            <div className="text-blue-600">
+                                                {t.source === 'facebook' && <Facebook size={20} />}
+                                                {t.source === 'instagram' && <Instagram size={20} className="text-pink-600" />}
+                                                {t.source === 'twitter' && <Twitter size={20} className="text-blue-400" />}
+                                            </div>
                                         </div>
+                                        <div className="flex gap-0.5 text-yellow-400">
+                                            {[...Array(5)].map((_, i) => <Star key={i} size={14} fill="currentColor" />)}
+                                        </div>
+                                        <p className="text-gray-600 text-sm leading-relaxed font-medium">
+                                            "{t.text}"
+                                        </p>
                                     </div>
-                                    <div className="text-blue-600">
-                                        {t.source === 'facebook' && <Facebook size={20} />}
-                                        {t.source === 'instagram' && <Instagram size={20} className="text-pink-600" />}
-                                        {t.source === 'twitter' && <Twitter size={20} className="text-blue-400" />}
-                                    </div>
+                                    <Quote className="absolute -top-4 -right-4 w-24 h-24 text-gray-50 -rotate-12 group-hover/card:text-primary/10 transition-colors pointer-events-none" />
                                 </div>
-                                <div className="flex gap-0.5 text-yellow-400">
-                                    {[...Array(5)].map((_, i) => <Star key={i} size={14} fill="currentColor" />)}
-                                </div>
-                                <Quote className="absolute -top-4 -right-4 w-24 h-24 text-gray-100 -rotate-12 group-hover:text-primary/10 transition-colors" />
-                                <p className="text-gray-600 text-sm leading-relaxed font-medium relative z-10">
-                                    "{t.text}"
-                                </p>
-                            </div>
-                        ))}
+                            ))}
+                        </div>
+
+                        {/* Mobile Indicators */}
+                        <div className="flex justify-center gap-2 mt-4 md:hidden">
+                            {testimonials.map((_, i) => (
+                                <div
+                                    key={i}
+                                    className={`h-2 rounded-full transition-all duration-500 ${i === activeTestimonial ? 'w-8 bg-primary' : 'w-2 bg-primary/30'
+                                        }`}
+                                ></div>
+                            ))}
+                        </div>
                     </div>
                 </div>
             </section>
