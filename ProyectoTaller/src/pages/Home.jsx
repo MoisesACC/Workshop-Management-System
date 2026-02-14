@@ -82,7 +82,7 @@ const Home = () => {
     const [sliderPos, setSliderPos] = useState(50);
     const [timeLeft, setTimeLeft] = useState({ days: '00', hours: '00', minutes: '00', seconds: '00' });
     const [activeHeroImg, setActiveHeroImg] = useState(0);
-    const heroImages = ["/src/assets/img/slider.png", "/src/assets/img/slider2.png"];
+    const heroImages = ["/assets/img/slider.png", "/assets/img/slider2.png"];
 
     const handleSliderChange = (e) => {
         setSliderPos(e.target.value);
@@ -136,7 +136,7 @@ const Home = () => {
                     <img
                         alt="Luxury car in dark garage"
                         className="w-full h-full object-cover object-center translate-y-[-10%]"
-                        src="/src/assets/img/carousel-bg-4.jpg"
+                        src="/assets/img/carousel-bg-4.jpg"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-background-dark via-background-dark/80 to-background-dark/40"></div>
                 </div>
@@ -377,7 +377,7 @@ const Home = () => {
 
                     <div className="relative rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
                         <img
-                            src="/src/assets/img/panel.png"
+                            src="/assets/img/panel.png"
                             alt="Proceso de trabajo Factoría La Caravana"
                             className="w-full h-auto rounded-2xl"
                         />
@@ -410,7 +410,7 @@ const Home = () => {
                         {/* Service 1 */}
                         <div className="group bg-surface-dark border-r border-white/5 last:border-0 hover:bg-surface-darker/80 transition-all duration-500">
                             <div className="relative h-64 overflow-hidden">
-                                <img src="/src/assets/img/1.png" alt="Planchado y Pintura" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                                <img src="/assets/img/1.png" alt="Planchado y Pintura" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                                 <div className="absolute inset-0 bg-gradient-to-t from-surface-dark to-transparent"></div>
                             </div>
                             <div className="p-10 space-y-6">
@@ -425,7 +425,7 @@ const Home = () => {
                         {/* Service 2 */}
                         <div className="group bg-surface-dark border-r border-white/5 last:border-0 hover:bg-surface-darker/80 transition-all duration-500">
                             <div className="relative h-64 overflow-hidden">
-                                <img src="/src/assets/img/2.png" alt="Mantenimiento" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                                <img src="/assets/img/2.png" alt="Mantenimiento" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                                 <div className="absolute inset-0 bg-gradient-to-t from-surface-dark to-transparent"></div>
                                 <div className="absolute bottom-6 left-6">
                                 </div>
@@ -442,7 +442,7 @@ const Home = () => {
                         {/* Service 3 */}
                         <div className="group bg-surface-dark border-r border-white/5 last:border-0 hover:bg-surface-darker/80 transition-all duration-500">
                             <div className="relative h-64 overflow-hidden">
-                                <img src="/src/assets/img/3.png" alt="Pintura de Aros" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                                <img src="/assets/img/3.png" alt="Pintura de Aros" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                                 <div className="absolute inset-0 bg-gradient-to-t from-surface-dark to-transparent"></div>
                             </div>
                             <div className="p-10 space-y-6">
@@ -553,17 +553,17 @@ const Home = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {/* Project 1 */}
                         <div className="group relative rounded-2xl overflow-hidden aspect-[4/3] bg-gray-100 shadow-xl">
-                            <img src="/src/assets/img/Antess.png" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Project" />
+                            <img src="/assets/img/Antess.png" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Project" />
                             <div className="absolute bottom-4 left-4 inline-flex items-center gap-2 bg-primary px-4 py-1.5 rounded-lg text-white text-[10px] font-black uppercase tracking-widest italic shadow-lg">Antes</div>
                         </div>
                         {/* Project 2 */}
                         <div className="group relative rounded-2xl overflow-hidden aspect-[4/3] bg-gray-100 shadow-xl">
-                            <img src="/src/assets/img/proceso.png" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Project" />
+                            <img src="/assets/img/proceso.png" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Project" />
                             <div className="absolute bottom-4 left-4 inline-flex items-center gap-2 bg-gray-900 px-4 py-1.5 rounded-lg text-white text-[10px] font-black uppercase tracking-widest italic shadow-lg">Proceso</div>
                         </div>
                         {/* Project 3 */}
                         <div className="group relative rounded-2xl overflow-hidden aspect-[4/3] bg-gray-100 shadow-xl">
-                            <img src="/src/assets/img/Despues.png" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Project" />
+                            <img src="/assets/img/Despues.png" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Project" />
                             <div className="absolute bottom-4 left-4 inline-flex items-center gap-2 bg-primary px-4 py-1.5 rounded-lg text-white text-[10px] font-black uppercase tracking-widest italic shadow-lg">Después</div>
                         </div>
                     </div>
@@ -600,7 +600,7 @@ const Home = () => {
                         <div className="lg:w-1/1 relative w-full h-[400px] md:h-[500px] rounded-2xl overflow-hidden shadow-2xl border border-white/10 group select-none">
                             {/* After Image (Background) */}
                             <div className="absolute inset-0 w-full h-full">
-                                <img src="/src/assets/img/Despues.png" className="w-full h-full object-cover" alt="After" />
+                                <img src="/assets/img/Despues.png" className="w-full h-full object-cover" alt="After" />
                                 <div className="absolute top-4 right-4 bg-primary/90 text-white text-[10px] font-bold px-3 py-1 rounded tracking-widest backdrop-blur-sm">DESPUÉS</div>
                             </div>
 
@@ -610,7 +610,7 @@ const Home = () => {
                                 style={{ width: `${sliderPos}%` }}
                             >
                                 <img
-                                    src="/src/assets/img/antes.png"
+                                    src="/assets/img/antes.png"
                                     className="absolute top-0 left-0 h-full object-cover"
                                     alt="Before"
                                     style={{ width: `${100 / (sliderPos / 100)}%`, maxWidth: 'none' }}
