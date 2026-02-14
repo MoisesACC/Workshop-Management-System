@@ -61,7 +61,7 @@ const Footer = () => {
                     {/* Column 4: Map */}
                     <div className="h-full min-h-[200px] rounded-lg overflow-hidden bg-gray-800 relative">
                         <iframe
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15611.127896582522!2d-77.0864239!3d-11.9767357!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTHCsDU4JzM2LjEiUyA3N8KwMDUnMTEuMCJX!5e0!3m2!1sen!2spe!4v1620000000000!5m2!1sen!2spe"
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d580.1677100114517!2d-77.08722673519979!3d-11.982280045121486!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9105cf1b3a6c931b%3A0x8bbf9edf40f44040!2sFACTOR%C3%8DA%20LA%20CARAVANA!5e0!3m2!1ses-419!2spe!4v1771091945419!5m2!1ses-419!2spe"
                             width="100%" height="100%" style={{ border: 0 }} allowFullScreen="" loading="lazy"></iframe>
                     </div>
                 </div>
