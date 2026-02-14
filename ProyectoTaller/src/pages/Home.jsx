@@ -130,7 +130,7 @@ const Home = () => {
         <div className="bg-background-dark font-display text-gray-100 antialiased overflow-x-hidden">
 
             {/* --- HERO SECTION --- */}
-            <section className="relative h-screen min-h-[600px] flex items-center justify-center overflow-hidden">
+            <section className="relative min-h-[100dvh] flex items-center justify-center overflow-hidden py-20 lg:py-0">
                 {/* Background Image with Overlay */}
                 <div className="absolute inset-0 z-0">
                     <img
@@ -141,49 +141,49 @@ const Home = () => {
                     <div className="absolute inset-0 bg-gradient-to-t from-background-dark via-background-dark/80 to-background-dark/40"></div>
                 </div>
 
-                <div className="relative z-10 container mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center pt-32 md:pt-20">
+                <div className="relative z-10 container mx-auto px-4 md:px-6 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center pt-20 lg:pt-20">
                     {/* Left Column Text (Restored Design) */}
-                    <div className="lg:col-span-6 space-y-6">
-                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/20 border border-primary/30 backdrop-blur-sm text-primary text-sm font-semibold tracking-wider uppercase mb-2">
+                    <div className="lg:col-span-6 space-y-6 w-full max-w-full overflow-hidden">
+                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/20 border border-primary/30 backdrop-blur-sm text-primary text-[10px] md:text-sm font-semibold tracking-wider uppercase mb-2">
                             <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
                             Especialistas en Alta Gama
                         </div>
-                        <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-white leading-tight tracking-tight">
+                        <h1 className="text-4xl xs:text-5xl md:text-7xl lg:text-8xl font-black text-white leading-[1.1] tracking-tight whitespace-normal break-words">
                             TU CARRO <br />
-                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-red-600">¡COMO NUEVO!</span>
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-red-600 block sm:inline">¡COMO NUEVO!</span>
                         </h1>
-                        <p className="text-gray-300 text-lg md:text-xl max-w-2xl font-light border-l-4 border-primary pl-6">
+                        <p className="text-gray-300 text-base md:text-xl max-w-2xl font-light border-l-4 border-primary pl-4 md:pl-6 leading-relaxed">
                             Diagnóstico premium, reparación experta y detailing profesional para vehículos que merecen lo mejor. La excelencia mecánica es nuestro estándar.
                         </p>
 
-                        <div className="flex flex-col sm:flex-row gap-3 pt-4">
-                            <a href="#booking" className="inline-flex justify-center items-center py-4 px-8 text-base font-bold text-center text-white rounded-lg bg-primary hover:bg-primary-dark focus:ring-4 focus:ring-primary/30 transition-all shadow-[0_0_20px_rgba(216,3,39,0.4)]">
+                        <div className="flex flex-col sm:flex-row gap-4 pt-4">
+                            <a href="#booking" className="inline-flex justify-center items-center py-4 px-8 text-sm md:text-base font-bold text-center text-white rounded-lg bg-primary hover:bg-primary-dark focus:ring-4 focus:ring-primary/30 transition-all shadow-[0_0_20px_rgba(216,3,39,0.4)] active:scale-95">
                                 Agendar Cita <Calendar className="ml-2" size={20} />
                             </a>
-                            <NavLink to="/servicios" className="inline-flex justify-center items-center py-4 px-8 text-base font-medium text-center text-white rounded-lg border border-white/30 hover:bg-white/10 hover:border-white focus:ring-4 focus:ring-gray-700 transition-all backdrop-blur-sm">
+                            <NavLink to="/servicios" className="inline-flex justify-center items-center py-4 px-8 text-sm md:text-base font-medium text-center text-white rounded-lg border border-white/30 hover:bg-white/10 hover:border-white focus:ring-4 focus:ring-gray-700 transition-all backdrop-blur-sm active:scale-95">
                                 Ver Servicios <ArrowRight className="ml-2" size={20} />
                             </NavLink>
                         </div>
 
                         {/* Stats */}
-                        <div className="pt-12 grid grid-cols-3 gap-8 border-t border-white/10 max-w-lg mt-8">
-                            <div>
-                                <p className="text-3xl font-bold text-white">15+</p>
-                                <p className="text-sm text-gray-400 uppercase tracking-wider">Años Experiencia</p>
+                        <div className="pt-8 md:pt-12 grid grid-cols-3 gap-2 md:gap-8 border-t border-white/10 max-w-lg mt-8">
+                            <div className="text-left">
+                                <p className="text-xl xs:text-2xl md:text-3xl font-bold text-white leading-none">15+</p>
+                                <p className="text-[8px] md:text-sm text-gray-400 uppercase tracking-tighter sm:tracking-widest mt-2">Años Exp.</p>
                             </div>
-                            <div>
-                                <p className="text-3xl font-bold text-white">5k+</p>
-                                <p className="text-sm text-gray-400 uppercase tracking-wider">Clientes Felices</p>
+                            <div className="text-left border-x border-white/5 px-2 md:px-0">
+                                <p className="text-xl xs:text-2xl md:text-3xl font-bold text-white leading-none">5k+</p>
+                                <p className="text-[8px] md:text-sm text-gray-400 uppercase tracking-tighter sm:tracking-widest mt-2">Clientes</p>
                             </div>
-                            <div>
-                                <p className="text-3xl font-bold text-white">100%</p>
-                                <p className="text-sm text-gray-400 uppercase tracking-wider">Garantía</p>
+                            <div className="text-left">
+                                <p className="text-xl xs:text-2xl md:text-3xl font-bold text-white leading-none">100%</p>
+                                <p className="text-[8px] md:text-sm text-gray-400 uppercase tracking-tighter sm:tracking-widest mt-2">Garantía</p>
                             </div>
                         </div>
                     </div>
 
                     {/* Right Column Visual (Infinite Carousel) */}
-                    <div className="lg:col-span-6 relative">
+                    <div className="lg:col-span-6 relative w-full max-w-full overflow-hidden">
                         <div className="relative group">
                             {/* Decorative Frame */}
                             <div className="absolute -inset-2 bg-gradient-to-r from-primary to-transparent opacity-20 blur-xl"></div>
