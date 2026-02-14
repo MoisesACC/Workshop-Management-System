@@ -214,9 +214,10 @@ const Home = () => {
                         </div>
 
                         {/* Bottom Overlay Text - Single Line Style */}
-                        <div className="mt-8 flex flex-col items-end justify-center">
+                        <div className="mt-8 flex flex-col items-center justify-center">
                             <h2 className="text-3xl md:text-5xl lg:text-5xl font-black italic uppercase tracking-tighter leading-none">
-                                <span className="text-white">FACTORÍA</span> <span className="text-primary whitespace-nowrap">LA CARAVANA</span>
+                                <span className="text-white">FACTORÍA</span>
+                                 <span className="text-primary whitespace-nowrap">LA CARAVANA</span>
                             </h2>
                             <p className="text-yellow-500 font-black tracking-[0.3em] uppercase text-[10px] text-center md:text-xs mt-3">
                                 SERVICIOS DE PLANCHADO Y PINTURA AUTOMOTRIZ
