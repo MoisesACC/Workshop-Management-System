@@ -28,7 +28,7 @@ const PublicGallery = () => {
             title: "BMW M4 Competition",
             category: "paint",
             description: "Restauración completa de lateral y pintura tricapa original.",
-            image: "/assets/img/carousel-1.png",
+            image: "/assets/img/carousel-1.webp",
             tag: "Premium",
             stats: { time: "4 días", quality: "Glasurit" }
         },
@@ -37,7 +37,7 @@ const PublicGallery = () => {
             title: "Audi R8 Spyder",
             category: "detailing",
             description: "Tratamiento cerámico 9H y corrección de barniz.",
-            image: "/assets/img/2.png",
+            image: "/assets/img/2.webp",
             tag: "Exótico",
             stats: { time: "3 días", quality: "Ceramic Pro" }
         },
@@ -46,7 +46,7 @@ const PublicGallery = () => {
             title: "Mustang GT 1967",
             category: "restoration",
             description: "Restauración total de carrocería y pintura personalizada.",
-            image: "/assets/img/3.png",
+            image: "/assets/img/3.webp",
             tag: "Clásico",
             stats: { time: "15 días", quality: "Show Car" }
         },
@@ -55,7 +55,7 @@ const PublicGallery = () => {
             title: "Porsche 911 Turbo",
             category: "paint",
             description: "Velo de novia y pulido espejo de alta gama.",
-            image: "/assets/img/1.png",
+            image: "/assets/img/1.webp",
             tag: "Premium",
             stats: { time: "5 días", quality: "OEM Paint" }
         },
@@ -64,7 +64,7 @@ const PublicGallery = () => {
             title: "Range Rover Vogue",
             category: "detailing",
             description: "Detailing interior y protección hidrofóbica.",
-            image: "/assets/img/carousel-bg-2.jpg",
+            image: "/assets/img/carousel-bg-2.webp",
             tag: "SUV Luxe",
             stats: { time: "2 días", quality: "Premium Care" }
         },
@@ -73,7 +73,7 @@ const PublicGallery = () => {
             title: "Aros Custom Mercedes",
             category: "wheels",
             description: "Reparación y pintura en negro piano.",
-            image: "/assets/img/carousel-1.png",
+            image: "/assets/img/carousel-1.webp",
             tag: "Custom",
             stats: { time: "1 día", quality: "Powder Coat" }
         }
@@ -88,7 +88,7 @@ const PublicGallery = () => {
             {/* --- HERO SECTION --- */}
             <section className="relative py-16 md:py-24 overflow-hidden border-b border-white/5">
                 <div className="absolute inset-0 z-0">
-                    <img src="/assets/img/panel.png" className="w-full h-full object-cover opacity-10 blur-sm scale-110" alt="Bg" />
+                    <img src="/assets/img/panel.webp" className="w-full h-full object-cover opacity-10 blur-sm scale-110" alt="Bg" />
                     <div className="absolute inset-0 bg-gradient-to-b from-background-dark via-background-dark/95 to-background-dark"></div>
                 </div>
 

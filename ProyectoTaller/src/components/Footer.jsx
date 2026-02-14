@@ -10,7 +10,7 @@ const Footer = () => {
                     {/* Column 1 */}
                     <div className="space-y-6">
                         <NavLink className="flex items-center gap-2" to="/">
-                            <img src="/assets/img/logo.png" alt="Factoría La Caravana" className="h-12 w-auto" />
+                            <img src="/assets/img/logo.webp" alt="Factoría La Caravana" className="h-12 w-auto" />
                         </NavLink>
                         <p className="text-gray-400 text-sm leading-relaxed">
                             Tu taller de confianza especializado en vehículos de gama alta. Calidad, precisión y servicio premium en cada detalle.

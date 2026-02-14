@@ -17,7 +17,7 @@ const PublicServices = () => {
             title: "Planchado y Pintura",
             subtitle: "RESTAURACIÓN ESTRUCTURAL",
             description: "Recuperamos la línea original de su vehículo con tecnología de punta. Utilizamos sistemas de soldadura punto a punto y bancos de estiramiento computarizados para garantizar la integridad estructural.",
-            image: "/assets/img/1.png",
+            image: "/assets/img/1.webp",
             features: [
                 "Desabollado en frío sin dañar pintura original",
                 "Soldadura MIG/MAG para máxima resistencia",
@@ -31,7 +31,7 @@ const PublicServices = () => {
             title: "Pintura al Horno",
             subtitle: "ACABADO DE FÁBRICA",
             description: "Contamos con laboratorio de colorimetría propio y cabina de pintura presurizada. Aplicamos pinturas de base agua (Eco-friendly) con barnices de alto solidos para un brillo y durabilidad inigualable.",
-            image: "/assets/img/pintura.jpg",
+            image: "/assets/img/pintura.webp",
             features: [
                 "Colorimetría exacta por computadora",
                 "Secado controlado por infrarrojos",
@@ -45,7 +45,7 @@ const PublicServices = () => {
             title: "Detailing Profesional",
             subtitle: "ESTÉTICA DE EXPOSICIÓN",
             description: "No es solo una limpieza, es una restauración estética integral. Protegemos su inversión con los tratamientos más avanzados del mercado mundial.",
-            image: "/assets/img/2.png",
+            image: "/assets/img/2.webp",
             features: [
                 "Recubrimiento Cerámico 9H",
                 "Corrección de pintura (3 pasos)",
@@ -59,7 +59,7 @@ const PublicServices = () => {
             title: "Pintura de Aros",
             subtitle: "PERSONALIZACIÓN EXCLUSIVA",
             description: "Damos un nuevo look a sus rines con acabados personalizados. Desde negro piano hasta colores satinados o metalizados con alta resistencia térmica.",
-            image: "/assets/img/3.png",
+            image: "/assets/img/3.webp",
             features: [
                 "Limpieza por chorreado de arena",
                 "Pintura electrostática (Powder Coat)",
@@ -93,7 +93,7 @@ const PublicServices = () => {
             {/* --- HERO SECTION --- */}
             <section className="relative py-12 md:py-20 overflow-hidden">
                 <div className="absolute inset-0 z-0">
-                    <img src="/assets/img/carousel-bg-2.jpg" className="w-full h-full object-cover opacity-50" alt="Background" />
+                    <img src="/assets/img/carousel-bg-2.webp" className="w-full h-full object-cover opacity-50" alt="Background" />
                     <div className="absolute inset-0 bg-gradient-to-b from-background-dark/50 via-background-dark to-background-dark"></div>
                 </div>
 

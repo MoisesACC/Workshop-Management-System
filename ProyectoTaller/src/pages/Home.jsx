@@ -11,27 +11,27 @@ import {
 import '../css/home.css'; // Might need to clear this file later or use it for specific non-tailwind needs
 
 const brands = [
-    { name: 'Chery', logo: 'https://insideautosperu.com/wp-content/uploads/2020/12/Chery-logo.jpg' },
-    { name: 'Audi', logo: 'https://www.shutterstock.com/image-vector/audi-logo-icon-metal-circle-600nw-2269704655.jpg' },
-    { name: 'BMW', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/BMW.svg/1024px-BMW.svg.png' },
-    { name: 'Toyota', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Toyota_logo_%28Red%29.svg/960px-Toyota_logo_%28Red%29.svg.png' },
-    { name: 'Hyundai', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Hyundai_Motor_Company_logo.svg/1024px-Hyundai_Motor_Company_logo.svg.png' },
-    { name: 'Chevrolet', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Chevrolet-logo.png/1024px-Chevrolet-logo.png' },
-    { name: 'Suzuki', logo: 'https://static.vecteezy.com/system/resources/thumbnails/014/414/680/small/suzuki-logo-on-transparent-background-free-vector.jpg' },
+    { name: 'Chery', logo: 'https://insideautosperu.com/wp-content/uploads/2020/12/Chery-logo.webp' },
+    { name: 'Audi', logo: 'https://www.shutterstock.com/image-vector/audi-logo-icon-metal-circle-600nw-2269704655.webp' },
+    { name: 'BMW', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/BMW.svg/1024px-BMW.svg.webp' },
+    { name: 'Toyota', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Toyota_logo_%28Red%29.svg/960px-Toyota_logo_%28Red%29.svg.webp' },
+    { name: 'Hyundai', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Hyundai_Motor_Company_logo.svg/1024px-Hyundai_Motor_Company_logo.svg.webp' },
+    { name: 'Chevrolet', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Chevrolet-logo.webp/1024px-Chevrolet-logo.webp' },
+    { name: 'Suzuki', logo: 'https://static.vecteezy.com/system/resources/thumbnails/014/414/680/small/suzuki-logo-on-transparent-background-free-vector.webp' },
     { name: 'Mazda', logo: 'https://cdn.worldvectorlogo.com/logos/mazda-2.svg' },
-    { name: 'Mitsubishi', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Mitsubishi_logo.svg/1024px-Mitsubishi_logo.svg.png' },
-    { name: 'Honda', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Honda_Logo.svg/1024px-Honda_Logo.svg.png' }
+    { name: 'Mitsubishi', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Mitsubishi_logo.svg/1024px-Mitsubishi_logo.svg.webp' },
+    { name: 'Honda', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Honda_Logo.svg/1024px-Honda_Logo.svg.webp' }
 ];
 
 const luxuryBrands = [
-    { name: 'Mercedes-Benz', logo: 'https://images.seeklogo.com/logo-png/33/1/mercedes-benz-logo-png_seeklogo-332844.png' },
-    { name: 'Kia', logo: 'https://i.pinimg.com/736x/29/a0/e6/29a0e6d7e71f8ad6fcf30e36ad038e6e.jpg' },
-    { name: 'Peugeot', logo: 'https://static.vecteezy.com/system/resources/previews/020/500/602/non_2x/peugeot-brand-logo-symbol-with-name-black-design-french-car-automobile-illustration-free-vector.jpg' },
-    { name: 'Volvo', logo: 'https://brandemia.org/contenido/subidas/2014/03/logo_volvo-rincipal.jpg' },
-    { name: 'Lexus', logo: 'https://i.pinimg.com/736x/23/10/46/2310462e9af663d3a207ecba7d63e233.jpg' },
+    { name: 'Mercedes-Benz', logo: 'https://images.seeklogo.com/logo-png/33/1/mercedes-benz-logo-png_seeklogo-332844.webp' },
+    { name: 'Kia', logo: 'https://i.pinimg.com/736x/29/a0/e6/29a0e6d7e71f8ad6fcf30e36ad038e6e.webp' },
+    { name: 'Peugeot', logo: 'https://static.vecteezy.com/system/resources/previews/020/500/602/non_2x/peugeot-brand-logo-symbol-with-name-black-design-french-car-automobile-illustration-free-vector.webp' },
+    { name: 'Volvo', logo: 'https://brandemia.org/contenido/subidas/2014/03/logo_volvo-rincipal.webp' },
+    { name: 'Lexus', logo: 'https://i.pinimg.com/736x/23/10/46/2310462e9af663d3a207ecba7d63e233.webp' },
     { name: 'JAC', logo: 'https://www.jac.pe/media/evhlcfn0/jac-logo-2024-opt.webp' },
-    { name: 'Subaru', logo: 'https://thumbs.dreamstime.com/b/logo-subaru-124401322.jpg' },
-    { name: 'Jeep', logo: 'https://static.vecteezy.com/system/resources/thumbnails/020/500/247/small/jeep-brand-logo-car-symbol-black-design-usa-automobile-illustration-free-vector.jpg' }
+    { name: 'Subaru', logo: 'https://thumbs.dreamstime.com/b/logo-subaru-124401322.webp' },
+    { name: 'Jeep', logo: 'https://static.vecteezy.com/system/resources/thumbnails/020/500/247/small/jeep-brand-logo-car-symbol-black-design-usa-automobile-illustration-free-vector.webp' }
 ];
 
 const testimonials = [
@@ -40,49 +40,49 @@ const testimonials = [
         handle: "@edgarcruz",
         text: "¡Increíble trabajo! La precisión en el planchado de Factoría La Caravana es impresionante. Mi vehículo quedó impecable, sin arrugas ni marcas. Definitivamente, mi primera opción para futuros detalles.",
         source: "facebook",
-        img: "https://randomuser.me/api/portraits/men/32.jpg"
+        img: "https://randomuser.me/api/portraits/men/32.webp"
     },
     {
         name: "Dj Zenkoo",
         handle: "@djzenkoo",
         text: "Factoría La Caravana hizo un trabajo excepcional con el planchado y la pintura de mi coche. La atención al detalle y la dedicación al trabajo son notables. ¡Mi vehículo parece nuevo! No dudaría en volver.",
         source: "instagram",
-        img: "https://randomuser.me/api/portraits/men/45.jpg"
+        img: "https://randomuser.me/api/portraits/men/45.webp"
     },
     {
         name: "Alex Palomino",
         handle: "@alexpalomino",
         text: "Se nota que tienen experiencia y saben lo que hacen. Sin duda, volveré para más detalles. Excelente acabado en pintura al horno.",
         source: "twitter",
-        img: "https://randomuser.me/api/portraits/men/86.jpg"
+        img: "https://randomuser.me/api/portraits/men/86.webp"
     }
 ];
 
 const productBrands = [
-    { name: 'Werku', logo: 'https://m.media-amazon.com/images/S/aplus-media-library-service-media/4d95a22e-916a-4719-b326-2e3808bdfa97.__CR0,0,970,300_PT0_SX970_V1___.jpg' },
-    { name: 'Sherwin Williams', logo: 'https://www.thelokengroup.com/site/wp-content/uploads/2019/07/Sherwin-Williams-Logos-Vector-Free-Download.jpg' },
+    { name: 'Werku', logo: 'https://m.media-amazon.com/images/S/aplus-media-library-service-media/4d95a22e-916a-4719-b326-2e3808bdfa97.__CR0,0,970,300_PT0_SX970_V1___.webp' },
+    { name: 'Sherwin Williams', logo: 'https://www.thelokengroup.com/site/wp-content/uploads/2019/07/Sherwin-Williams-Logos-Vector-Free-Download.webp' },
     { name: 'Glasurit', logo: 'https://knowhow.glasurit.com/themes/custom/glasurit/logo.svg' },
     { name: 'Norton', logo: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmnUGlzsZX-VN4d9DKPEUjt2LylYH9uU80TA&s' },
     { name: 'Sika', logo: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1EOqJPJD6scFEnogyrPVbCKoU9P0JysUJqw&s' },
-    { name: '3M', logo: 'https://static.vecteezy.com/system/resources/previews/014/414/669/non_2x/3m-logo-on-transparent-background-free-vector.jpg' },
+    { name: '3M', logo: 'https://static.vecteezy.com/system/resources/previews/014/414/669/non_2x/3m-logo-on-transparent-background-free-vector.webp' },
     { name: 'Anypsa', logo: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0je368vDyTFjDozDIijmHGVgtBaNaDZ9OFQ&s' }
 ];
 
 const productBrands2 = [
-    { name: 'Makita', logo: 'https://1000marcas.net/wp-content/uploads/2020/02/Makita-Logo-1.png' },
+    { name: 'Makita', logo: 'https://1000marcas.net/wp-content/uploads/2020/02/Makita-Logo-1.webp' },
     { name: 'Roberlo', logo: 'https://www.roberlo.com/wp-content/uploads/logo-roberlo-1.svg' },
     { name: 'Liqui Moly', logo: 'https://upload.wikimedia.org/wikipedia/commons/5/50/Liqui-moly.svg' },
-    { name: 'Castrol', logo: 'https://static.vecteezy.com/system/resources/previews/014/414/709/non_2x/castrol-logo-on-transparent-background-free-vector.jpg' },
-    { name: 'Mobil', logo: 'https://thumbs.dreamstime.com/b/logo-mobil-127603560.jpg' },
-    { name: 'Sikkens', logo: 'https://scontent.flim30-1.fna.fbcdn.net/v/t39.30808-6/302240885_363636279316340_8547595804044342023_n.png?_nc_cat=106&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=RVHS3zIf6mIQ7kNvwG-q1lw&_nc_oc=AdnxSUQ-f1Sf4R2edQLR4ctspp2RDGBGLRrqgS8wfEiLAwf_r4PZd7TKyi_LQis0ONFjbFh1Bsu31LAzvYpWg_Sc&_nc_zt=23&_nc_ht=scontent.flim30-1.fna&_nc_gid=TwSStfrYbfbF2tRyPzGtEw&oh=00_AfvFekfJuVMyU0w8EyoSnx_fCVRMelXg24bMCblTedHq5Q&oe=69969496' },
-    { name: 'Danny Color\'s', logo: 'https://dannycolors.com/wp-content/uploads/2024/09/Logo-danny-color%C2%B4s-1400x340.png' }
+    { name: 'Castrol', logo: 'https://static.vecteezy.com/system/resources/previews/014/414/709/non_2x/castrol-logo-on-transparent-background-free-vector.webp' },
+    { name: 'Mobil', logo: 'https://thumbs.dreamstime.com/b/logo-mobil-127603560.webp' },
+    { name: 'Sikkens', logo: 'https://scontent.flim30-1.fna.fbcdn.net/v/t39.30808-6/302240885_363636279316340_8547595804044342023_n.webp?_nc_cat=106&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=RVHS3zIf6mIQ7kNvwG-q1lw&_nc_oc=AdnxSUQ-f1Sf4R2edQLR4ctspp2RDGBGLRrqgS8wfEiLAwf_r4PZd7TKyi_LQis0ONFjbFh1Bsu31LAzvYpWg_Sc&_nc_zt=23&_nc_ht=scontent.flim30-1.fna&_nc_gid=TwSStfrYbfbF2tRyPzGtEw&oh=00_AfvFekfJuVMyU0w8EyoSnx_fCVRMelXg24bMCblTedHq5Q&oe=69969496' },
+    { name: 'Danny Color\'s', logo: 'https://dannycolors.com/wp-content/uploads/2024/09/Logo-danny-color%C2%B4s-1400x340.webp' }
 ];
 
 const Home = () => {
     const [sliderPos, setSliderPos] = useState(50);
     const [timeLeft, setTimeLeft] = useState({ days: '00', hours: '00', minutes: '00', seconds: '00' });
     const [activeHeroImg, setActiveHeroImg] = useState(0);
-    const heroImages = ["/assets/img/slider.png", "/assets/img/slider2.png"];
+    const heroImages = ["/assets/img/slider.webp", "/assets/img/slider2.webp"];
 
     const handleSliderChange = (e) => {
         setSliderPos(e.target.value);
@@ -136,7 +136,7 @@ const Home = () => {
                     <img
                         alt="Luxury car in dark garage"
                         className="w-full h-full object-cover object-center translate-y-[-10%]"
-                        src="/assets/img/carousel-bg-4.jpg"
+                        src="/assets/img/carousel-bg-4.webp"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-background-dark via-background-dark/80 to-background-dark/40"></div>
                 </div>
@@ -227,7 +227,7 @@ const Home = () => {
             </section>
             {/* --- PROMO COUNTDOWN SECTION --- */}
             <section className="bg-red-600 py-10 relative overflow-hidden group">
-                <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20"></div>
+                <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.webp')] opacity-20"></div>
                 <div className="max-w-7xl mx-auto px-6 relative z-10 flex flex-col lg:flex-row items-center justify-between gap-10">
                     <div className="text-center lg:text-left space-y-2">
                         <h2 className="text-4xl md:text-5xl font-black text-white italic uppercase tracking-tighter leading-none">
@@ -362,7 +362,7 @@ const Home = () => {
                 </div>
             </section>
 
-            {/* --- WORKFLOW PROCESS SECTION (panel.png Integration) --- */}
+            {/* --- WORKFLOW PROCESS SECTION (panel.webp Integration) --- */}
             <section className="py-24 bg-background-dark relative overflow-hidden">
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/5 blur-[150px] rounded-full pointer-events-none"></div>
 
@@ -377,7 +377,7 @@ const Home = () => {
 
                     <div className="relative rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
                         <img
-                            src="/assets/img/panel.png"
+                            src="/assets/img/panel.webp"
                             alt="Proceso de trabajo Factoría La Caravana"
                             className="w-full h-auto rounded-2xl"
                         />
@@ -410,7 +410,7 @@ const Home = () => {
                         {/* Service 1 */}
                         <div className="group bg-surface-dark border-r border-white/5 last:border-0 hover:bg-surface-darker/80 transition-all duration-500">
                             <div className="relative h-64 overflow-hidden">
-                                <img src="/assets/img/1.png" alt="Planchado y Pintura" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                                <img src="/assets/img/1.webp" alt="Planchado y Pintura" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                                 <div className="absolute inset-0 bg-gradient-to-t from-surface-dark to-transparent"></div>
                             </div>
                             <div className="p-10 space-y-6">
@@ -425,7 +425,7 @@ const Home = () => {
                         {/* Service 2 */}
                         <div className="group bg-surface-dark border-r border-white/5 last:border-0 hover:bg-surface-darker/80 transition-all duration-500">
                             <div className="relative h-64 overflow-hidden">
-                                <img src="/assets/img/2.png" alt="Mantenimiento" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                                <img src="/assets/img/2.webp" alt="Mantenimiento" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                                 <div className="absolute inset-0 bg-gradient-to-t from-surface-dark to-transparent"></div>
                                 <div className="absolute bottom-6 left-6">
                                 </div>
@@ -442,7 +442,7 @@ const Home = () => {
                         {/* Service 3 */}
                         <div className="group bg-surface-dark border-r border-white/5 last:border-0 hover:bg-surface-darker/80 transition-all duration-500">
                             <div className="relative h-64 overflow-hidden">
-                                <img src="/assets/img/3.png" alt="Pintura de Aros" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                                <img src="/assets/img/3.webp" alt="Pintura de Aros" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                                 <div className="absolute inset-0 bg-gradient-to-t from-surface-dark to-transparent"></div>
                             </div>
                             <div className="p-10 space-y-6">
@@ -553,17 +553,17 @@ const Home = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {/* Project 1 */}
                         <div className="group relative rounded-2xl overflow-hidden aspect-[4/3] bg-gray-100 shadow-xl">
-                            <img src="/assets/img/Antess.png" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Project" />
+                            <img src="/assets/img/Antess.webp" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Project" />
                             <div className="absolute bottom-4 left-4 inline-flex items-center gap-2 bg-primary px-4 py-1.5 rounded-lg text-white text-[10px] font-black uppercase tracking-widest italic shadow-lg">Antes</div>
                         </div>
                         {/* Project 2 */}
                         <div className="group relative rounded-2xl overflow-hidden aspect-[4/3] bg-gray-100 shadow-xl">
-                            <img src="/assets/img/proceso.png" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Project" />
+                            <img src="/assets/img/proceso.webp" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Project" />
                             <div className="absolute bottom-4 left-4 inline-flex items-center gap-2 bg-gray-900 px-4 py-1.5 rounded-lg text-white text-[10px] font-black uppercase tracking-widest italic shadow-lg">Proceso</div>
                         </div>
                         {/* Project 3 */}
                         <div className="group relative rounded-2xl overflow-hidden aspect-[4/3] bg-gray-100 shadow-xl">
-                            <img src="/assets/img/Despues.png" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Project" />
+                            <img src="/assets/img/Despues.webp" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Project" />
                             <div className="absolute bottom-4 left-4 inline-flex items-center gap-2 bg-primary px-4 py-1.5 rounded-lg text-white text-[10px] font-black uppercase tracking-widest italic shadow-lg">Después</div>
                         </div>
                     </div>
@@ -600,7 +600,7 @@ const Home = () => {
                         <div className="lg:w-1/1 relative w-full h-[400px] md:h-[500px] rounded-2xl overflow-hidden shadow-2xl border border-white/10 group select-none">
                             {/* After Image (Background) */}
                             <div className="absolute inset-0 w-full h-full">
-                                <img src="/assets/img/Despues.png" className="w-full h-full object-cover" alt="After" />
+                                <img src="/assets/img/Despues.webp" className="w-full h-full object-cover" alt="After" />
                                 <div className="absolute top-4 right-4 bg-primary/90 text-white text-[10px] font-bold px-3 py-1 rounded tracking-widest backdrop-blur-sm">DESPUÉS</div>
                             </div>
 
@@ -610,7 +610,7 @@ const Home = () => {
                                 style={{ width: `${sliderPos}%` }}
                             >
                                 <img
-                                    src="/assets/img/antes.png"
+                                    src="/assets/img/antes.webp"
                                     className="absolute top-0 left-0 h-full object-cover"
                                     alt="Before"
                                     style={{ width: `${100 / (sliderPos / 100)}%`, maxWidth: 'none' }}

@@ -1,20 +1,17 @@
 
 import { useState, useEffect } from 'react';
 import '../css/carousel.css';
-import carousel1 from '../assets/img/carousel-1.png';
-import carousel2 from '../assets/img/carousel-2.png';
-
 const Carousel = () => {
     const [current, setCurrent] = useState(0);
     const slides = [
         {
-            image: carousel1,
+            image: '/assets/img/carousel-1.webp',
             title: 'Tu Auto en las Mejores Manos',
             subtitle: 'Servicio Profesional y Garantizado',
             cta: 'Ver Servicios'
         },
         {
-            image: carousel2,
+            image: '/assets/img/carousel-2.webp',
             title: 'Mantenimiento Preventivo',
             subtitle: 'Alarga la vida de tu motor',
             cta: 'Agendar Cita'
