@@ -1074,10 +1074,10 @@ const UserDashboard = () => {
     return (
         <div className="bg-[#0a0a0b] min-h-screen text-gray-200 font-display selection:bg-primary/30">
             {/* Header / Nav Tabs */}
-            <div className="fixed top-16 left-0 right-0 z-40 bg-[#0a0a0b]/80 backdrop-blur-xl border-b border-white/5">
+            <div className="fixed top-[64px] md:top-[88px] left-0 right-0 z-40 bg-[#0a0a0b]/80 backdrop-blur-xl border-b border-white/5">
                 <div className="max-w-7xl mx-auto px-6">
                     <div className="flex items-center justify-between h-16">
-                        <div className="flex gap-8">
+                        <div className="flex gap-4 md:gap-8 overflow-x-auto no-scrollbar">
                             {tabs.map((tab) => (
                                 <button
                                     key={tab.id}
@@ -1095,8 +1095,12 @@ const UserDashboard = () => {
                                 </button>
                             ))}
                         </div>
-                        <div className="hidden md:flex items-center gap-4">
-                            <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-primary to-red-600 p-[2px]">
+                        <div className="flex items-center gap-4 border-l border-white/10 pl-6 ml-4">
+                            <div className="text-right hidden sm:block">
+                                <p className="text-[10px] font-black text-white uppercase tracking-tighter leading-none">{user?.fullName || user?.username || 'Usuario'}</p>
+                                <p className="text-[8px] font-bold text-primary uppercase tracking-widest mt-1">Nivel Platinum</p>
+                            </div>
+                            <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-primary to-red-600 p-[2px] shadow-[0_0_15px_rgba(216,3,39,0.3)] shrink-0">
                                 <img src={user?.avatarUrl || "https://i.pravatar.cc/100"} className="w-full h-full rounded-full object-cover border-2 border-[#0a0a0b]" alt="Profile" />
                             </div>
                         </div>
@@ -1104,7 +1108,7 @@ const UserDashboard = () => {
                 </div>
             </div>
 
-            <main className="max-w-7xl mx-auto px-6 pt-40 pb-20">
+            <main className="max-w-7xl mx-auto px-6 pt-36 md:pt-48 pb-20">
                 <AnimatePresence mode="wait">
                     {activeTab === 'current' && <CurrentServiceView data={data} key="current" />}
                     {activeTab === 'vehicles' && <VehiclesView data={data} key="vehicles" onUpdate={fetchDashboardData} />}
