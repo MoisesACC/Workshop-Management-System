@@ -1,16 +1,41 @@
-# React + Vite
+# 🏎️ Factoría La Caravana - Client Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### Interfaz Premium para la Gestión de Talleres de Alta Gama
 
-Currently, two official plugins are available:
+Este es el cliente del sistema de gestión para **Factoría La Caravana**, desarrollado con un enfoque en diseño de vanguardia y rendimiento excepcional. Proporciona tanto un portal público para clientes como un completo panel de control para administradores.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Tecnologías Principales
 
-## React Compiler
+*   **Framework:** [React 19](https://react.dev/) + [Vite](https://vitejs.dev/)
+*   **Estilos:** [Tailwind CSS](https://tailwindcss.com/)
+*   **Animaciones:** [Framer Motion](https://www.framer.com/motion/)
+*   **Iconografía:** [Lucide React](https://lucide.dev/)
+*   **Enrutamiento:** [React Router 7](https://reactrouter.com/)
+*   **Estado & Auth:** Context API para gestión de autenticación y roles.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 💎 Características Visuales
 
-## Expanding the ESLint configuration
+*   **WebP Image Optimization:** Todas las imágenes locales han sido optimizadas para carga ultra-rápida.
+*   **Mobile-First Design:** Optimización específica para dispositivos de gama alta (probado en iPhone 15).
+*   **Infinite Marquees:** Sliders fluidos para marcas aliadas con aceleración por hardware.
+*   **Componentes Premium:** Testimonios con scroll táctil, Hero sections dinámicos y galerías interactivas.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 📂 Estructura de Carpetas
+
+*   `src/pages`: Componentes de página (Home, Dashboard, Admin, etc.).
+*   `src/components`: Componentes reutilizables (Navbar, Footer, Layouts).
+*   `src/context`: Lógica de autenticación.
+*   `src/css`: Estilos específicos y animaciones personalizadas.
+*   `public/assets/img`: Almacén de activos optimizados.
+
+## 🛠️ Instalación y Desarrollo
+
+1. Clonar el repositorio.
+2. Navegar a la carpeta: `cd ProyectoTaller`
+3. Instalar dependencias: `npm install`
+4. Iniciar servidor de desarrollo: `npm run dev`
+5. Construir para producción: `npm run build`
+
+---
+
+Desarrollado para ofrecer precisión, lujo y eficiencia en cada clic.
